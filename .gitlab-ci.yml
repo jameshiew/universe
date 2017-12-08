@@ -2,7 +2,10 @@
 image: registry.gitlab.com/jameshiew/universe/ci:latest
 
 before_script:
-  - cmake .
+  - mkdir build/
+  - cd build/
+  - conan install ..
+  - cmake ..
 
 build:
   script:
