@@ -8,7 +8,7 @@ conan_basic_setup()
 add_executable(universe
     vendor/glad/src/glad.c
     src/main.c
-)
+        src/main.h src/main.h)
 
 include_directories(
     vendor/glad/include/
