@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "input.h"
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
@@ -30,6 +32,8 @@ int main() {
 
     glViewport(0, 0, 800, 600);
     while (!glfwWindowShouldClose(window)) {
+        processInput(window);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
