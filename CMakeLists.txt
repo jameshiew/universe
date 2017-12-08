@@ -7,11 +7,13 @@ conan_basic_setup()
 
 add_executable(universe
     vendor/glad/src/glad.c
+    vendor/sds/sds.c
     src/main.c
-        src/main.h src/main.h src/input.h src/input.c)
+        src/main.h src/input.h src/input.c src/shaders.c src/shaders.h)
 
 include_directories(
     vendor/glad/include/
+    vendor/sds/
 )
 
 target_link_libraries(universe ${CONAN_LIBS})
