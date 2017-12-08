@@ -1,0 +1,9 @@
+---
+image: registry.gitlab.com/jameshiew/universe/ci:latest
+
+before_script:
+  - cmake .
+
+build:
+  script:
+    - make -j 4
