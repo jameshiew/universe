@@ -5,7 +5,6 @@
 #ifndef UNIVERSE_SHADERS_H
 #define UNIVERSE_SHADERS_H
 
-const char *vertexShaderSource;
-const char *fragmentShaderSource;
+GLuint get_shader_program();
 
 #endif //UNIVERSE_SHADERS_H
