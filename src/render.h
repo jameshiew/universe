@@ -7,6 +7,6 @@
 
 #include <GLFW/glfw3.h>
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void resize_viewport(GLFWwindow *window, int width, int height);
 
 #endif //UNIVERSE_RENDER_H

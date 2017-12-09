@@ -4,6 +4,8 @@
 
 #include "render.h"
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+// GLFWwindow argument is because this function can be provided as a callback to
+// glfwSetFramebufferSizeCallback()
+void resize_viewport(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
