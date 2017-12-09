@@ -5,13 +5,10 @@
 
 #include "input.h"
 #include "shaders.h"
+#include "render.h"
 
 const int DEFAULT_WINDOW_WIDTH = 800;
 const int DEFAULT_WINDOW_HEIGHT = 600;
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
 
 int main() {
     glfwInit();
