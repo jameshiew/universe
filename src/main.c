@@ -6,6 +6,9 @@
 #include "input.h"
 #include "shaders.h"
 
+const int DEFAULT_WINDOW_WIDTH = 800;
+const int DEFAULT_WINDOW_HEIGHT = 600;
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
@@ -17,7 +20,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL) {
         printf("Failed to create GLFW window");
         glfwTerminate();
@@ -109,7 +112,7 @@ int main() {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
