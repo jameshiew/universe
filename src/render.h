@@ -5,8 +5,6 @@
 #ifndef UNIVERSE_RENDER_H
 #define UNIVERSE_RENDER_H
 
-#include <GLFW/glfw3.h>
-
-void resize_viewport(GLFWwindow *window, int width, int height);
+GLFWwindow *create_window();
 
 #endif //UNIVERSE_RENDER_H

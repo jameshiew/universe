@@ -1,0 +1,11 @@
+//
+// Created by James Hiew on 09/12/2017.
+//
+
+#ifndef UNIVERSE_CONFIG_H
+#define UNIVERSE_CONFIG_H
+
+#define DEFAULT_WINDOW_WIDTH 800
+#define DEFAULT_WINDOW_HEIGHT 600
+
+#endif //UNIVERSE_CONFIG_H

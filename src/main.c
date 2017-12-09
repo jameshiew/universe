@@ -6,35 +6,18 @@
 #include "input.h"
 #include "shaders.h"
 #include "render.h"
-
-const int DEFAULT_WINDOW_WIDTH = 800;
-const int DEFAULT_WINDOW_HEIGHT = 600;
+#include "config.h"
 
 int main() {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-    GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = create_window();
     if (window == NULL) {
-        printf("Failed to create GLFW window");
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, resize_viewport);
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        printf("Failed to initialize GLAD");
         return -1;
     }
 
     // build and compile our shader program
     // ------------------------------------
     // vertex shader
-    int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     // check for shader compile errors
@@ -47,7 +30,7 @@ int main() {
         fputs("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n", stderr);
     }
     // fragment shader
-    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
     // check for shader compile errors
@@ -58,7 +41,7 @@ int main() {
         fputs("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n", stderr);
     }
     // link shaders
-    int shaderProgram = glCreateProgram();
+    GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
