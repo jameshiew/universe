@@ -11,23 +11,22 @@
 polygon *polygon_new() {
     polygon *p = malloc(sizeof(polygon));
 
-    p->numberOfVertices = 4;
-    size_t v = p->numberOfVertices * 3 * sizeof(float);
+    p->numberOfVertices = 3;
+    size_t v = p->numberOfVertices * 6 * sizeof(float);
     p->vertices = malloc(v);
     float vertices[] = {
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-            -0.5f,  0.5f, 0.0f   // top left
+            // positions         // colors
+            0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+            0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
     };
     memcpy(p->vertices, vertices, v);
 
-    p->numberOfTriangles = 2;
-    size_t t = p->numberOfTriangles * 3 * sizeof(float);
+    p->numberOfTriangles = 1;
+    size_t t = p->numberOfTriangles * 6 * sizeof(float);
     p->indices = malloc(t);
     unsigned int indices[] = {  // note that we start from 0!
-            0, 1, 3,  // first Triangle
-            1, 2, 3   // second Triangle
+            0, 1, 2,  // first Triangle
     };
     memcpy(p->indices, indices, t);
 
@@ -39,8 +38,12 @@ polygon *polygon_new() {
     glGenBuffers(1, &(p->ebo));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, p->ebo);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
 
 
     glBufferData(GL_ARRAY_BUFFER, v, p->vertices, GL_STATIC_DRAW);

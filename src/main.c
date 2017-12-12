@@ -30,7 +30,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         double timeValue = glfwGetTime();
         double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "baseColor");
         glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
 
         // seeing as we only have a single VAO there's no need to bind it every time,
