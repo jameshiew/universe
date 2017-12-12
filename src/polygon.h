@@ -16,5 +16,6 @@ typedef struct polygon {
 } polygon;
 
 polygon *polygon_new();
+void polygon_free(polygon *polygon);
 
 #endif //UNIVERSE_POLYGON_H

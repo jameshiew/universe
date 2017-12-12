@@ -42,7 +42,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    polygon_free(p);
     glfwTerminate();
     return 0;
 }
