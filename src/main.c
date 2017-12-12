@@ -2,13 +2,19 @@
 #include <GLFW/glfw3.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "input.h"
 #include "shaders.h"
 #include "render.h"
-#include "config.h"
 #include "polygon.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#define MATH_3D_IMPLEMENTATION
+#include "math_3d.h"
 
 int main() {
     GLFWwindow *window = create_window();
@@ -28,10 +34,17 @@ int main() {
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         double timeValue = glfwGetTime();
+
         double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "baseColor");
+        GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "baseColor");
         glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
+
+        mat4_t trans = m4_rotation_z(sin(timeValue));
+
+        GLint transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&trans);
 
         // seeing as we only have a single VAO there's no need to bind it every time,
         // but we'll do so to keep things a bit more organized

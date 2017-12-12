@@ -6,12 +6,10 @@
 #include <GLFW/glfw3.h>
 
 #include <stdio.h>
+#include <stb_image.h>
 
 #include "config.h"
 #include "render.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 // GLFWwindow argument is because this function can be provided as a callback to
 // glfwSetFramebufferSizeCallback()

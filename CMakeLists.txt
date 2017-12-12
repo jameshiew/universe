@@ -8,8 +8,12 @@ set(CMAKE_C_STANDARD 11)
 # GLAD
 file(GLOB GLAD_SOURCE_FILES vendor/glad/src/glad.c)
 include_directories(vendor/glad/include/)
+
 # stb_image
 include_directories(vendor/stb/)
+
+# single-header-file-c-libs
+include_directories(vendor/single-header-file-c-libs/)
 # -----------------------------
 
 # --- Final executable ---
@@ -19,6 +23,7 @@ file(GLOB SOURCE_FILES src/*.c)
 add_executable(universe
     ${SOURCE_FILES}
     ${GLAD_SOURCE_FILES}
+    ${GRAPHENE_SOURCE_FILES}
 )
 target_link_libraries(universe ${CONAN_LIBS})
 # ------------------------------
