@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <stdio.h>
+#include <math.h>
 
 #include "input.h"
 #include "shaders.h"
@@ -16,7 +17,14 @@ int main() {
     }
     print_debug_output();
 
-    GLuint shaderProgram = load_program("../../shaders/basic.glslv", "../../shaders/basic.glslf");
+    GLuint shaderProgram = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
+    glUseProgram(shaderProgram);
+    double timeValue = glfwGetTime();
+    double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
+    glUseProgram(0);
+
     polygon *p = polygon_new();
 
 

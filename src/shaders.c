@@ -33,17 +33,17 @@ GLuint load_shader(GLenum type, const char *path) {
     return result;
 }
 
-GLuint load_program(const char *path1, const char *path2) {
-    GLuint shader1 = load_shader(GL_VERTEX_SHADER, path1);
-    GLuint shader2 = load_shader(GL_FRAGMENT_SHADER, path2);
-    GLuint program = make_program(shader1, shader2);
+GLuint load_program(const char *vertexShaderPath, const char *fragmentShaderPath) {
+    GLuint vertexShader = load_shader(GL_VERTEX_SHADER, vertexShaderPath);
+    GLuint fragmentShader = load_shader(GL_FRAGMENT_SHADER, fragmentShaderPath);
+    GLuint program = make_program(vertexShader, fragmentShader);
     return program;
 }
 
-GLuint make_program(GLuint shader1, GLuint shader2) {
+GLuint make_program(GLuint vertexShader, GLuint fragmentShader) {
     GLuint program = glCreateProgram();
-    glAttachShader(program, shader1);
-    glAttachShader(program, shader2);
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
     glLinkProgram(program);
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
@@ -55,9 +55,9 @@ GLuint make_program(GLuint shader1, GLuint shader2) {
         fprintf(stderr, "glLinkProgram failed: %s\n", info);
         free(info);
     }
-    glDetachShader(program, shader1);
-    glDetachShader(program, shader2);
-    glDeleteShader(shader1);
-    glDeleteShader(shader2);
+    glDetachShader(program, vertexShader);
+    glDetachShader(program, fragmentShader);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
     return program;
 }
