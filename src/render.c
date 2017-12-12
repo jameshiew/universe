@@ -38,3 +38,9 @@ GLFWwindow *create_window() {
     }
     return window;
 }
+
+void print_debug_output() {
+    GLint numberOfAttributes;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numberOfAttributes);
+    fprintf(stdout, "Maximum vertex attributes: %d", numberOfAttributes);
+}

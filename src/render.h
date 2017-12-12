@@ -6,5 +6,6 @@
 #define UNIVERSE_RENDER_H
 
 GLFWwindow *create_window();
+void print_debug_output();
 
 #endif //UNIVERSE_RENDER_H

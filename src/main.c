@@ -14,6 +14,7 @@ int main() {
     if (window == NULL) {
         return -1;
     }
+    print_debug_output();
 
     GLuint shaderProgram = load_program("../../shaders/basic.glslv", "../../shaders/basic.glslf");
     polygon *p = polygon_new();
