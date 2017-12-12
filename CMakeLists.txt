@@ -8,7 +8,7 @@ conan_basic_setup()
 add_executable(universe
     vendor/glad/src/glad.c
     vendor/sds/sds.c
-    src/main.c src/input.h src/input.c src/shaders.c src/shaders.h src/shaders.c src/shaders.h src/render.c src/render.h src/config.h src/util.c src/util.h)
+    src/main.c src/input.h src/input.c src/shaders.c src/shaders.h src/shaders.c src/shaders.h src/render.c src/render.h src/config.h src/util.c src/util.h src/polygon.c src/polygon.h)
 
 include_directories(
     vendor/glad/include/
