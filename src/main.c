@@ -18,12 +18,6 @@ int main() {
     print_debug_output();
 
     GLuint shaderProgram = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
-    glUseProgram(shaderProgram);
-    double timeValue = glfwGetTime();
-    double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-    glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
-    glUseProgram(0);
 
     polygon *p = polygon_new();
 
@@ -34,6 +28,10 @@ int main() {
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        double timeValue = glfwGetTime();
+        double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
 
         // seeing as we only have a single VAO there's no need to bind it every time,
         // but we'll do so to keep things a bit more organized
