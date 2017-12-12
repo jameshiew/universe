@@ -5,10 +5,11 @@ set(CMAKE_C_STANDARD 11)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+file(GLOB SOURCE_FILES src/*.c)
 add_executable(universe
+    ${SOURCE_FILES}
     vendor/glad/src/glad.c
-    vendor/sds/sds.c
-    src/main.c src/input.h src/input.c src/shaders.c src/shaders.h src/shaders.c src/shaders.h src/render.c src/render.h src/config.h src/util.c src/util.h src/polygon.c src/polygon.h)
+    vendor/sds/sds.c)
 
 include_directories(
     vendor/glad/include/
