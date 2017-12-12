@@ -14,7 +14,7 @@ int main() {
         return -1;
     }
 
-    GLuint shaderProgram = get_shader_program();
+    GLuint shaderProgram = load_program("../../shaders/basic.glslv", "../../shaders/basic.glslf");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
