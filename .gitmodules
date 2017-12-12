@@ -1,3 +1,0 @@
-[submodule "vendor/sds"]
-	path = vendor/sds
-	url = https://github.com/antirez/sds
