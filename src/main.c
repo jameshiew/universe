@@ -20,7 +20,7 @@ int main() {
     GLuint shaderProgram = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
 
     polygon *p = polygon_new();
-
+    GLuint texture = load_texture("../../textures/container.jpg");
 
     glUseProgram(shaderProgram);
     while (!glfwWindowShouldClose(window)) {
@@ -36,6 +36,8 @@ int main() {
         // seeing as we only have a single VAO there's no need to bind it every time,
         // but we'll do so to keep things a bit more organized
         glBindVertexArray(p->vao);
+        glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
+        glBindTexture(GL_TEXTURE_2D, texture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0); // technically no need to unbind it every time
 
