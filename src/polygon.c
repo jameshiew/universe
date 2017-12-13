@@ -8,7 +8,7 @@
 
 #include "polygon.h"
 
-const size_t VERTEX_SIZE = 8 * sizeof(float);
+const size_t VERTEX_SIZE = 5 * sizeof(float);
 
 polygon *polygon_new() {
     polygon *p = malloc(sizeof(polygon));
@@ -17,11 +17,11 @@ polygon *polygon_new() {
     size_t v = p->numberOfVertices * VERTEX_SIZE;
     p->vertices = malloc(v);
     float vertices[] = {
-        // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
+        // positions          // texture coords
+        0.5f,  0.5f, 0.0f,  1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // top left
     };
     memcpy(p->vertices, vertices, v);
 
@@ -30,7 +30,7 @@ polygon *polygon_new() {
     p->indices = malloc(t);
     unsigned int indices[] = {  // note that we start from 0!
             0, 1, 2,  // first Triangle
-            0, 2, 3,  // first Triangle
+            0, 2, 3,  // second Triangle
     };
     memcpy(p->indices, indices, t);
 
@@ -45,12 +45,9 @@ polygon *polygon_new() {
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void*)0);
     glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
     // texture attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
 
     glBufferData(GL_ARRAY_BUFFER, v, p->vertices, GL_STATIC_DRAW);
