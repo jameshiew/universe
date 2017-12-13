@@ -50,8 +50,13 @@ int main() {
     glUseProgram(shaderProgram);
     GLint transformLoc;
     Camera *camera = Camera_new();
+    float deltaTime = 0.0f;	// Time between current frame and last frame
+    float lastFrame = 0.0f; // Time of last frame
     while (!glfwWindowShouldClose(window)) {
-        processInput(window, camera);
+        double timeValue = glfwGetTime();
+        deltaTime = timeValue - lastFrame;
+        lastFrame = timeValue;
+        processInput(window, camera, deltaTime);
         // update projection if window dimensions have changed
         projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
         transformLoc = glGetUniformLocation(shaderProgram, "projection");
@@ -60,7 +65,6 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        double timeValue = glfwGetTime();
         vec3_t cameraFront = vec3(0.0f, 0.0f, -1.0f);
         view = m4_look_at(camera->position, v3_add(camera->position, cameraFront), camera->up);
         transformLoc = glGetUniformLocation(shaderProgram, "view");
