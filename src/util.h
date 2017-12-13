@@ -6,5 +6,6 @@
 #define UNIVERSE_UTIL_H
 
 char *load_file(const char *path);
+float radians(float degrees);
 
 #endif //UNIVERSE_UTIL_H

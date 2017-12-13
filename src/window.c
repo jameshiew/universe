@@ -30,9 +30,11 @@ GLFWwindow *initWindow() {
         fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
     }
-
+    glfwSetWindowUserPointer(window, &WINDOW);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, resize_viewport);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         fputs("Failed to initialize GLAD", stderr);

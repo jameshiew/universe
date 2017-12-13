@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <math.h>
 
 #include "util.h"
 
@@ -22,4 +23,8 @@ char *load_file(const char *path) {
     fread(data, 1, length, file);
     fclose(file);
     return data;
+}
+
+inline float radians(float degrees) {
+    return degrees * (M_PI / 180.0);
 }

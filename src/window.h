@@ -7,12 +7,14 @@
 
 #include <GLFW/glfw3.h>
 #include "config.h"
+#include "camera.h"
 
 
 typedef struct Window {
     GLFWwindow *_glfw;
     int width;
     int height;
+    Camera *camera;
 } Window;
 
 GLFWwindow *initWindow();
