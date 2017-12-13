@@ -16,9 +16,11 @@
 
 #define MATH_3D_IMPLEMENTATION
 #include "math_3d.h"
+#include "window.h"
+#include "main.h"
 
 int main() {
-    GLFWwindow *window = create_window();
+    GLFWwindow *window = initWindow();
     if (window == NULL) {
         return -1;
     }
@@ -32,15 +34,12 @@ int main() {
 
     mat4_t model = m4_rotation_x(-1.0f);
     mat4_t view = m4_translation(vec3(0.0f, 0.0f, -3.0f));
-    mat4_t projection = m4_perspective(45.0f, DEFAULT_WINDOW_WIDTH / DEFAULT_WINDOW_HEIGHT, 0.1f, 100.0f);
 
     glUseProgram(shaderProgram);
     GLint transformLoc = glGetUniformLocation(shaderProgram, "model");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
     transformLoc = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
-    transformLoc = glGetUniformLocation(shaderProgram, "projection");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
 
     vec3_t cubePositions[] = {
         vec3( 0.0f,  0.0f,  0.0f),
@@ -57,6 +56,10 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
+        // update projection if window dimensions have changed
+        mat4_t projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
+        transformLoc = glGetUniformLocation(shaderProgram, "projection");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -82,7 +85,6 @@ int main() {
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         glBindVertexArray(0); // technically no need to unbind it every time
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
