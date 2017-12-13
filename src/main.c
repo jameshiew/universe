@@ -22,6 +22,7 @@ int main() {
     if (window == NULL) {
         return -1;
     }
+    glEnable(GL_DEPTH_TEST);
     print_debug_output();
 
     GLuint shaderProgram = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
@@ -41,6 +42,19 @@ int main() {
     transformLoc = glGetUniformLocation(shaderProgram, "projection");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
 
+    vec3_t cubePositions[] = {
+        vec3( 0.0f,  0.0f,  0.0f),
+        vec3( 2.0f,  5.0f, -15.0f),
+        vec3(-1.5f, -2.2f, -2.5f),
+        vec3(-3.8f, -2.0f, -12.3f),
+        vec3( 2.4f, -0.4f, -3.5f),
+        vec3(-1.7f,  3.0f, -7.5f),
+        vec3( 1.3f, -2.0f, -2.5f),
+        vec3( 1.5f,  2.0f, -2.5f),
+        vec3( 1.5f,  0.2f, -1.5f),
+        vec3(-1.3f,  1.0f, -1.5f),
+    };
+
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
@@ -58,7 +72,15 @@ int main() {
         glBindVertexArray(p->vao);
         glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
         glBindTexture(GL_TEXTURE_2D, texture);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for(unsigned int i = 0; i < 10; i++)
+        {
+            mat4_t model = m4_translation(cubePositions[i]);
+            float angle = 20.0f * i;
+            model = m4_mul(model, m4_rotation(angle, vec3(1.0f, 0.3f, 0.5f)));
+            transformLoc = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         glBindVertexArray(0); // technically no need to unbind it every time
 
         glfwSwapBuffers(window);
