@@ -24,6 +24,6 @@ add_executable(universe
     ${SOURCE_FILES}
     ${GLAD_SOURCE_FILES}
     ${GRAPHENE_SOURCE_FILES}
-        src/window.c src/window.h src/main.h)
+        src/window.c src/window.h src/main.h src/camera.c src/camera.h)
 target_link_libraries(universe ${CONAN_LIBS})
 # ------------------------------

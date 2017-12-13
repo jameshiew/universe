@@ -32,14 +32,7 @@ int main() {
     polygon *p = polygon_new();
     GLuint texture = load_texture("../../textures/container.jpg");
 
-    mat4_t model = m4_rotation_x(-1.0f);
-    mat4_t view = m4_translation(vec3(0.0f, 0.0f, -3.0f));
-
-    glUseProgram(shaderProgram);
-    GLint transformLoc = glGetUniformLocation(shaderProgram, "model");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
-    transformLoc = glGetUniformLocation(shaderProgram, "view");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
+    mat4_t model, view, projection;
 
     vec3_t cubePositions[] = {
         vec3( 0.0f,  0.0f,  0.0f),
@@ -54,10 +47,12 @@ int main() {
         vec3(-1.3f,  1.0f, -1.5f),
     };
 
+    glUseProgram(shaderProgram);
+    GLint transformLoc;
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
         // update projection if window dimensions have changed
-        mat4_t projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
+        projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
         transformLoc = glGetUniformLocation(shaderProgram, "projection");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
 
@@ -65,6 +60,12 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         double timeValue = glfwGetTime();
+        float radius = 10.0f;
+        double camX = sin(glfwGetTime()) * radius;
+        double camZ = cos(glfwGetTime()) * radius;
+        view = m4_look_at(vec3(camX, 0.0f, camZ), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+        transformLoc = glGetUniformLocation(shaderProgram, "view");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
 
         double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
         GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "baseColor");
