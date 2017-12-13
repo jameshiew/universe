@@ -75,11 +75,11 @@ int main() {
         for(unsigned int i = 0; i < 10; i++)
         {
             mat4_t model = m4_translation(cubePositions[i]);
-            float angle = 20.0f * i;
-            model = m4_mul(model, m4_rotation(angle, vec3(1.0f, 0.3f, 0.5f)));
+            model = m4_mul(model, m4_rotation(sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
             transformLoc = glGetUniformLocation(shaderProgram, "model");
             glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         glBindVertexArray(0); // technically no need to unbind it every time
 
