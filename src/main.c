@@ -9,15 +9,15 @@
 #include "shaders.h"
 #include "render.h"
 #include "polygon.h"
-#include "config.h"
+#include "window.h"
+#include "main.h"
+#include "camera.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #define MATH_3D_IMPLEMENTATION
 #include "math_3d.h"
-#include "window.h"
-#include "main.h"
 
 int main() {
     GLFWwindow *window = initWindow();
@@ -49,8 +49,9 @@ int main() {
 
     glUseProgram(shaderProgram);
     GLint transformLoc;
+    Camera *camera = Camera_new();
     while (!glfwWindowShouldClose(window)) {
-        processInput(window);
+        processInput(window, camera);
         // update projection if window dimensions have changed
         projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
         transformLoc = glGetUniformLocation(shaderProgram, "projection");
@@ -60,10 +61,8 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         double timeValue = glfwGetTime();
-        float radius = 10.0f;
-        double camX = sin(glfwGetTime()) * radius;
-        double camZ = cos(glfwGetTime()) * radius;
-        view = m4_look_at(vec3(camX, 0.0f, camZ), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+        vec3_t cameraFront = vec3(0.0f, 0.0f, -1.0f);
+        view = m4_look_at(camera->position, v3_add(camera->position, cameraFront), camera->up);
         transformLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
 
@@ -78,7 +77,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture);
         for(unsigned int i = 0; i < 10; i++)
         {
-            mat4_t model = m4_translation(cubePositions[i]);
+            model = m4_translation(cubePositions[i]);
             model = m4_mul(model, m4_rotation(sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
             transformLoc = glGetUniformLocation(shaderProgram, "model");
             glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);

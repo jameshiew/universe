@@ -12,7 +12,7 @@ typedef struct Camera {
     vec3_t direction;  // actually a vector pointing opposite to what we are looking at...
     vec3_t right;
     vec3_t up;
-    mat4_t lookAt;
+    float speed;
 } Camera;
 
 Camera *Camera_new();
