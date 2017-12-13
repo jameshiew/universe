@@ -9,7 +9,7 @@
 
 typedef struct Camera {
     vec3_t position;
-    vec3_t direction;  // actually a vector pointing opposite to what we are looking at...
+    vec3_t behind;  // actually a vector pointing opposite to what we are looking at...
     vec3_t right;
     vec3_t up;
     vec3_t front;
