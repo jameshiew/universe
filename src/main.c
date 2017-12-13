@@ -52,44 +52,38 @@ int main() {
     glUseProgram(shaderProgram);
     GLint transformLoc;
     WINDOW.camera = Camera_new();
-    glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetCursorPos(window, WINDOW.camera->lastX, WINDOW.camera->lastY);
-    double deltaTime;	// Time between current frame and last frame
-    double lastFrame = 0.0f; // Time of last frame
+    glfwSetCursorPosCallback(window, mouse_callback);
+    double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
     while (!glfwWindowShouldClose(window)) {
+        // INPUT PROCESSING
         double timeValue = glfwGetTime();
-        deltaTime = timeValue - lastFrame;
-        lastFrame = timeValue;
+        deltaTime = timeValue - timeOfLastFrame;
+        timeOfLastFrame = timeValue;
         processInput(window, WINDOW.camera, deltaTime);
-        // update projection if window dimensions have changed
+
+        // MATRICES
         projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
         transformLoc = glGetUniformLocation(shaderProgram, "projection");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         view = m4_look_at(WINDOW.camera->position, v3_add(WINDOW.camera->position, WINDOW.camera->front), WINDOW.camera->up);
         transformLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
 
-        double greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "baseColor");
-        glUniform4f(vertexColorLocation, 0.0f, (GLfloat) greenValue, 0.0f, 1.0f);
-
-        // seeing as we only have a single VAO there's no need to bind it every time,
-        // but we'll do so to keep things a bit more organized
+        // DRAW
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindVertexArray(p->vao);
-        glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        for(unsigned int i = 0; i < 10; i++)
+        for (unsigned int i = 0; i < 10; i++)
         {
             model = m4_translation(cubePositions[i]);
             model = m4_mul(model, m4_rotation(sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
             transformLoc = glGetUniformLocation(shaderProgram, "model");
             glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
-//            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         glBindVertexArray(0); // technically no need to unbind it every time
