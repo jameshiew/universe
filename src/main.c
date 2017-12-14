@@ -50,7 +50,6 @@ int main() {
     };
 
     glUseProgram(shaderProgram);
-    GLint transformLoc;
     WINDOW.camera = Camera_new();
     glfwSetCursorPos(window, WINDOW.camera->lastX, WINDOW.camera->lastY);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -65,12 +64,12 @@ int main() {
 
         // MATRICES
         projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
-        transformLoc = glGetUniformLocation(shaderProgram, "projection");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&projection);
+        GLint projectionUniformLocation = glGetUniformLocation(shaderProgram, "projection");
+        glUniformMatrix4fv(projectionUniformLocation, 1, GL_FALSE, (const GLfloat *)&projection);
 
         view = m4_look_at(WINDOW.camera->position, v3_add(WINDOW.camera->position, WINDOW.camera->front), WINDOW.camera->up);
-        transformLoc = glGetUniformLocation(shaderProgram, "view");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&view);
+        GLint viewUniformLocation = glGetUniformLocation(shaderProgram, "view");
+        glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, (const GLfloat *)&view);
 
         // DRAW
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -78,12 +77,11 @@ int main() {
         glBindVertexArray(p->vao);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        for (unsigned int i = 0; i < 10; i++)
-        {
+        for (unsigned int i = 0; i < 10; i++) {
             model = m4_translation(cubePositions[i]);
             model = m4_mul(model, m4_rotation(sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
-            transformLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat *)&model);
+            GLint modelUniformLocation = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         glBindVertexArray(0); // technically no need to unbind it every time
