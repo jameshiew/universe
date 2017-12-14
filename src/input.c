@@ -47,9 +47,9 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     }
 
     vec3_t front = {0.0f, 0.0f, 0.0f};
-    front.x = cos(radians(camera->yaw)) * cos(radians(camera->pitch));
-    front.y = sin(radians(camera->pitch));
-    front.z = cos(radians(camera->yaw)) * sin(radians(camera->pitch));
+    front.x = cosf(radians(camera->yaw)) * cosf(radians(camera->pitch));
+    front.y = sinf(radians(camera->pitch));
+    front.z = cosf(radians(camera->yaw)) * sinf(radians(camera->pitch));
     camera->front = v3_norm(front);
     camera->right = v3_norm(v3_cross(camera->front, vec3(0.0f, 1.0f, 0.0f)));
     camera->up = v3_norm(v3_cross(camera->right, camera->front));

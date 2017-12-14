@@ -79,7 +79,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture);
         for (unsigned int i = 0; i < 10; i++) {
             model = m4_translation(cubePositions[i]);
-            model = m4_mul(model, m4_rotation(sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
+            model = m4_mul(model, m4_rotation(sinf(timeValue), vec3(1.0f, 0.3f, 0.5f)));
             GLint modelUniformLocation = glGetUniformLocation(shaderProgram, "model");
             glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
