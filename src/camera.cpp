@@ -9,8 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "camera.hpp"
-#include "main.hpp"
 #include "space.hpp"
+#include "window.hpp"
 
 Camera *Camera_new() {
     auto *camera = (Camera *) malloc(sizeof(Camera));

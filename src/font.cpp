@@ -5,9 +5,7 @@
 #include <map>
 #include <glad/glad.h>
 #include <string>
-#include "main.hpp"
 #include "font.hpp"
-#include "shaders.hpp"
 
 FT_Library library;
 FT_Face face;
