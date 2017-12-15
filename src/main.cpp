@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     glfwSetWindowUserPointer(A.window, &A);
     initFont();
 
-    GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
+    GLuint polygonShader = load_program("../../shaders/polygon/textured.vert", "../../shaders/polygon/textured.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
