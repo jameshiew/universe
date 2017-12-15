@@ -21,4 +21,6 @@ typedef struct Window {
 GLFWwindow *initWindow();
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+extern Window WINDOW;
+
 #endif //UNIVERSE_WINDOW_H
