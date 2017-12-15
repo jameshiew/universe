@@ -10,9 +10,16 @@
 FT_Library library;
 FT_Face face;
 
-std::map<GLchar, Character> Characters;
-
 GLuint textVAO, textVBO;
+
+typedef struct Character {
+    GLuint     TextureID;  // ID handle of the glyph texture
+    glm::ivec2 Size;       // Size of glyph
+    glm::ivec2 Bearing;    // Offset from baseline to left/top of glyph
+    GLuint     Advance;    // Offset to advance to next glyph
+} Character;
+
+std::map<GLchar, Character> Characters;
 
 void initFont() {
     if (FT_Init_FreeType(&library)) {
