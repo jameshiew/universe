@@ -23,6 +23,6 @@ typedef struct Camera {
 } Camera;
 
 Camera *Camera_new();
-void *Camera_debug(Camera *camera);
+void Camera_debug(Camera *camera);
 
 #endif //UNIVERSE_CAMERA_H

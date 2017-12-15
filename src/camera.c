@@ -25,7 +25,7 @@ Camera *Camera_new() {
     return camera;
 }
 
-void *Camera_debug(Camera *camera) {
+void Camera_debug(Camera *camera) {
     fputs("### CAMERA DETAILS\n", stdout);
     printf("Position: (%f, %f, %f)\n", camera->position.x, camera->position.y, camera->position.z);
     printf("Front: (%f, %f, %f)\n", camera->front.x, camera->front.y, camera->front.z);
