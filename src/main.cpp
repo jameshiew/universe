@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     if (A.window == nullptr) {
         return -1;
     }
+    A.camera = Camera_new();
     glfwSetWindowUserPointer(A.window, &A);
     initFont();
 
@@ -35,9 +36,6 @@ int main(int argc, char *argv[]) {
 
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
     GLuint texture = load_texture("../../textures/container.jpg");
-
-    A.camera = Camera_new();
-    double deltaTime, timeOfLastFrame = 0.0f;
 
     float quadDim = pow(2.f, 8.f);
     float floor[] = {
@@ -59,14 +57,16 @@ int main(int argc, char *argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    double deltaTime, timeOfLastFrame = 0.0f;
     while (!glfwWindowShouldClose(A.window)) {
-        processInput(A.window, deltaTime);
-        int width, height;
-        glfwGetFramebufferSize(A.window, &width, &height);
-        // INPUT PROCESSING
         double timeValue = glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
+
+        // INPUT PROCESSING
+        processInput(A.window, deltaTime);
+        int width, height;
+        glfwGetFramebufferSize(A.window, &width, &height);
 
         // DRAW
         glClearColor(0.f, 0.f, 0.f, 1.0f);
@@ -139,7 +139,6 @@ int main(int argc, char *argv[]) {
         glfwSwapBuffers(A.window);
         glfwPollEvents();
     }
-    Polygon_free(p);
     glfwTerminate();
     return 0;
 }
