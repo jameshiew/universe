@@ -6,7 +6,9 @@
 #include "util.h"
 #include "window.h"
 
-void processInput(GLFWwindow *window, Camera *camera, double deltaTime) {
+void processInput(GLFWwindow *window, double deltaTime) {
+    Window *WINDOW = glfwGetWindowUserPointer(window);
+    Camera *camera = WINDOW->camera;
     float speed = camera->speed * (float) deltaTime;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);

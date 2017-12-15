@@ -56,7 +56,8 @@ int main() {
         double timeValue = glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
-        processInput(window, WINDOW.camera, deltaTime);
+        printf("Frame time: %fms\n", deltaTime * 1000);
+        processInput(window, deltaTime);
 
         // MATRICES
         projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);

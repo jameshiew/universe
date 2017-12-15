@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 #include "camera.h"
 
-void processInput(GLFWwindow *window, Camera *camera, double deltaTime);
+void processInput(GLFWwindow *window, double deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 #endif //UNIVERSE_INPUT_H
