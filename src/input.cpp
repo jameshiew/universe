@@ -1,7 +1,6 @@
 #include <GLFW/glfw3.h>
 
 #include "input.hpp"
-#include "util.hpp"
 #include "window.hpp"
 #include "space.hpp"
 
