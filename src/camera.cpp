@@ -4,17 +4,21 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "camera.hpp"
 #include "main.hpp"
 
 Camera *Camera_new() {
-    Camera *camera = (Camera *) malloc(sizeof(Camera));
-    camera->position = vec3(0.0f, 0.0f, 3.0f);
-    camera->behind = v3_norm(v3_sub(camera->position, vec3(0.0f, 0.0f, 0.0f)));
-    vec3_t up = vec3(0.0f, 1.0f, 0.0f);
-    camera->right = v3_norm(v3_cross(up, camera->behind));
-    camera->up = v3_cross(camera->behind, camera->right);
-    camera->front = vec3(0.0f, 0.0f, -1.0f);
+    auto *camera = (Camera *) malloc(sizeof(Camera));
+    camera->position = glm::vec3(0.0f, 0.0f, 3.0f);
+    camera->behind = glm::normalize(camera->position - glm::vec3(0.0f, 0.0f, 0.0f));
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    camera->right = glm::normalize(glm::cross(up, camera->behind));
+    camera->up = glm::cross(camera->behind, camera->right);
+    camera->front = glm::vec3(0.0f, 0.0f, -1.0f);
     camera->speed = 2.5f;
     camera->pitch = 0.0f;
     camera->yaw = -90.0f;

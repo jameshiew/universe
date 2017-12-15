@@ -1,12 +1,11 @@
 #include <GLFW/glfw3.h>
-#include <cstdio>
 
 #include "input.hpp"
 #include "util.hpp"
 #include "window.hpp"
 
 void processInput(GLFWwindow *window, double deltaTime) {
-    Window *WINDOW = (Window *) glfwGetWindowUserPointer(window);
+    auto *WINDOW = (Window *) glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     float speed = camera->speed * (float) deltaTime;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
@@ -16,27 +15,27 @@ void processInput(GLFWwindow *window, double deltaTime) {
         glfwSetWindowShouldClose(window, true);
     }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera->position = v3_add(camera->position, v3_muls(camera->front, speed));
+        camera->position = camera->position + camera->front * speed;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera->position = v3_sub(camera->position, v3_muls(camera->front, speed));
+        camera->position = camera->position - camera->front * speed;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera->position = v3_sub(camera->position, v3_muls(v3_norm(v3_cross(camera->front, camera->up)), speed));
+        camera->position = camera->position - glm::normalize(glm::cross(camera->front, camera->up)) * speed;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera->position = v3_add(camera->position, v3_muls(v3_norm(v3_cross(camera->front, camera->up)), speed));
+        camera->position = camera->position + glm::normalize(glm::cross(camera->front, camera->up)) * speed;
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        camera->position = v3_add(camera->position, v3_muls(camera->up, speed));
+        camera->position = camera->position + camera->up * speed;
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-        camera->position = v3_sub(camera->position, v3_muls(camera->up, speed));
+        camera->position = camera->position - camera->up * speed;
     }
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
-    Window *WINDOW = (Window *) glfwGetWindowUserPointer(window);
+    auto *WINDOW = (Window *) glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     static bool firstTime = true;
     if (firstTime) {
@@ -62,11 +61,11 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
         camera->pitch = -89.0f;
     }
 
-    vec3_t front = {0.0f, 0.0f, 0.0f};
+    glm::vec3 front = {0.0f, 0.0f, 0.0f};
     front.x = cosf(radians(camera->pitch)) * cosf(radians(camera->yaw));
     front.y = sinf(radians(camera->pitch));
     front.z = cosf(radians(camera->pitch)) * sinf(radians(camera->yaw));
-    camera->front = v3_norm(front);
-    camera->right = v3_norm(v3_cross(camera->front, vec3(0.0f, 1.0f, 0.0f)));
-    camera->up = v3_norm(v3_cross(camera->right, camera->front));
+    camera->front = glm::normalize(front);
+    camera->right = glm::normalize(glm::cross(camera->front, glm::vec3(0.0f, 1.0f, 0.0f)));
+    camera->up = glm::normalize(glm::cross(camera->right, camera->front));
 }

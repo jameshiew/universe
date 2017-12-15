@@ -5,8 +5,7 @@
 #ifndef UNIVERSE_POLYGON_H
 #define UNIVERSE_POLYGON_H
 
-#include <math_3d.h>
-
+#include <glm/glm.hpp>
 typedef enum VERTEX_TYPE {
     VERTEX_TYPE_POINT,
     VERTEX_TYPE_COLORED,
@@ -26,7 +25,7 @@ typedef struct Polygon {
     GLuint ebo;
 } Polygon;
 
-Polygon *Rect_new(VERTEX_TYPE vertexType, vec3_t *corner);
+Polygon *Rect_new(VERTEX_TYPE vertexType, glm::vec3 *corner);
 Polygon *Cube_new(VERTEX_TYPE vertexType);
 void Polygon_free(Polygon *polygon);
 

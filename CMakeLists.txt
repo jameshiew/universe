@@ -13,9 +13,6 @@ include_directories(vendor/glad/include/)
 # stb_image
 include_directories(vendor/stb/)
 
-# single-header-file-c-libs
-include_directories(vendor/single-header-file-c-libs/)
-
 # freetype-gl
 include_directories(vendor/freetype-gl/)
 # -----------------------------

@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 
 #include <cstdio>
-#include <cstdlib>
 #include <cmath>
 
 #include "input.hpp"
@@ -13,15 +12,14 @@
 #include "font.hpp"
 #include "main.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define MATH_3D_IMPLEMENTATION
-#include "math_3d.h"
-
 int main(int argc, char *argv[]) {
     GLFWwindow *window = initWindow();
-    if (window == NULL) {
+    if (window == nullptr) {
         return -1;
     }
     glEnable(GL_DEPTH_TEST);
@@ -36,7 +34,7 @@ int main(int argc, char *argv[]) {
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
     GLuint texture = load_texture("../../textures/container.jpg");
 
-    mat4_t model, view, projection;
+    glm::mat4 model, view, projection;
 
     glUseProgram(polygonShader);
     WINDOW.camera = Camera_new();
@@ -52,15 +50,15 @@ int main(int argc, char *argv[]) {
         processInput(window, deltaTime);
 
         // MATRICES
-        projection = m4_perspective(45.0f, WINDOW.width / WINDOW.height, 0.1f, 100.0f);
+        projection = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
         GLint projectionUniformLocation = glGetUniformLocation(polygonShader, "projection");
         glUniformMatrix4fv(projectionUniformLocation, 1, GL_FALSE, (const GLfloat *)&projection);
 
-        view = m4_look_at(WINDOW.camera->position, v3_add(WINDOW.camera->position, WINDOW.camera->front), WINDOW.camera->up);
+        view = glm::lookAt(WINDOW.camera->position, WINDOW.camera->position + WINDOW.camera->front, WINDOW.camera->up);
         GLint viewUniformLocation = glGetUniformLocation(polygonShader, "view");
         glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, (const GLfloat *)&view);
 
-        vec3_t lightColor = vec3(1.0f, 1.0f, 1.0f);
+        glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
         GLint lightColorUniformLocation = glGetUniformLocation(polygonShader, "lightColor");
         glUniform3fv(lightColorUniformLocation, 1, (const GLfloat *)&lightColor);
 
@@ -71,7 +69,7 @@ int main(int argc, char *argv[]) {
         glBindVertexArray(p->vao);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        model = m4_rotation((float) sin(timeValue), vec3(1.0f, 0.3f, 0.5f));
+        model = glm::rotate(glm::mat4(), (float) sin(timeValue), glm::vec3(1.0f, 0.3f, 0.5f));
         GLint modelUniformLocation = glGetUniformLocation(polygonShader, "model");
         glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
