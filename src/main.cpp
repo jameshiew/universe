@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     GLuint polygonShader = load_program("../../shaders/polygon/textured.vert", "../../shaders/polygon/textured.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
-    Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
+    Polygon *p = Cube_new(VERTEX_TYPE_COLORED_WITH_NORMAL);
     std::default_random_engine prng;
     std::uniform_real_distribution<float> distribution(-100.f,100.f);
 
