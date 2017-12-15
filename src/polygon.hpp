@@ -29,4 +29,5 @@ Polygon *Rect_new(VERTEX_TYPE vertexType, glm::vec3 *corner);
 Polygon *Cube_new(VERTEX_TYPE vertexType);
 void Polygon_free(Polygon *polygon);
 
+
 #endif //UNIVERSE_POLYGON_H
