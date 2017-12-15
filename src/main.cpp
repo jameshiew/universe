@@ -44,13 +44,12 @@ int main(int argc, char *argv[]) {
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetKeyCallback(window, key_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
-    Camera_debug(WINDOW.camera);
 
-    float quadDim = 1e2f;
+    float quadDim = pow(2.f, 8.f);
     float floor[] = {
-            -quadDim, 0.0f, -quadDim, 8.0f, 8.0f,
-            -quadDim, 0.0f, quadDim, 8.0f, 0.0f,
-            quadDim, 0.0f, quadDim, 0.0f, 8.0f,
+            -quadDim, 0.0f, -quadDim, 64.0f, 64.0f,
+            -quadDim, 0.0f, quadDim, 64.0f, 0.0f,
+            quadDim, 0.0f, quadDim, 0.0f, 64.0f,
             quadDim, 0.0f, -quadDim, 0.0f, 0.0f,
     };
     GLuint a, b;
@@ -58,16 +57,11 @@ int main(int argc, char *argv[]) {
     glGenBuffers(1, &b);
     glBindVertexArray(a);
     glBindBuffer(GL_ARRAY_BUFFER, b);
-
-    // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
-    // texture attribute
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
-    glBufferData(GL_ARRAY_BUFFER, 20 * 5 * sizeof(float), &floor, GL_STATIC_DRAW);
-
+    glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), &floor, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -114,7 +108,7 @@ int main(int argc, char *argv[]) {
             glBindTexture(GL_TEXTURE_2D, texture);
             // floor
             glBindVertexArray(a);
-            glDrawArrays(GL_TRIANGLES, 0, 4);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             // other
             glBindVertexArray(p->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
@@ -137,8 +131,13 @@ int main(int argc, char *argv[]) {
             s_coords << "Position: (" << round(WINDOW.camera->position.x) << ", " << round(WINDOW.camera->position.y) << ", " << round(WINDOW.camera->position.z) << ")";
             std::string coords = s_coords.str();
 
+            std::ostringstream s_viewport;
+            s_viewport << "Viewport: " << WINDOW.width << "x" << WINDOW.height;
+            std::string viewport = s_viewport.str();
+
             renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
             renderText(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+            renderText(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
         }
 
         // next!
