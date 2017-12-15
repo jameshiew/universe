@@ -8,6 +8,7 @@
 
 Window WINDOW = {
     ._glfw = 0,
+    .paused = false,
     .width = DEFAULT_WINDOW_WIDTH,
     .height = DEFAULT_WINDOW_HEIGHT
 };

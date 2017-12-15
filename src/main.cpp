@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
 
     WINDOW.camera = Camera_new();
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetKeyCallback(window, key_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
 
@@ -71,12 +72,11 @@ int main(int argc, char *argv[]) {
     glBindVertexArray(0);
 
     while (!glfwWindowShouldClose(window)) {
+        processInput(window, deltaTime);
         // INPUT PROCESSING
         double timeValue = glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
-//        printf("Frame time: %fms\n", deltaTime * 1000);
-        processInput(window, deltaTime);
 
         // DRAW
         glClearColor(0.f, 0.f, 0.f, 1.0f);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         // 3D
         {
             glUseProgram(polygonShader);
-            auto projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 10000.0f);
+            auto projective = glm::perspective(70.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 10000.0f);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(projective)
