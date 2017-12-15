@@ -16,10 +16,10 @@ GLuint make_shader(GLenum type, const char *source) {
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE) {
-        GLint length;
+        size_t length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
         GLchar *info = calloc(length, sizeof(GLchar));
-        glGetShaderInfoLog(shader, length, NULL, info);
+        glGetShaderInfoLog(shader, (GLsizei) length, NULL, info);
         fprintf(stderr, "glCompileShader failed:\n%s\n", info);
         free(info);
     }
@@ -48,10 +48,10 @@ GLuint make_program(GLuint vertexShader, GLuint fragmentShader) {
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if (status == GL_FALSE) {
-        GLint length;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+        size_t length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, (GLint *)&length);
         GLchar *info = calloc(length, sizeof(GLchar));
-        glGetProgramInfoLog(program, length, NULL, info);
+        glGetProgramInfoLog(program, (GLsizei) length, NULL, info);
         fprintf(stderr, "glLinkProgram failed: %s\n", info);
         free(info);
     }

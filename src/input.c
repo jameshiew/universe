@@ -7,7 +7,7 @@
 #include "window.h"
 
 void processInput(GLFWwindow *window, Camera *camera, double deltaTime) {
-    double speed = camera->speed * deltaTime;
+    float speed = camera->speed * (float) deltaTime;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
