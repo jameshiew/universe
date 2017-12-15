@@ -53,6 +53,4 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     camera->front = v3_norm(front);
     camera->right = v3_norm(v3_cross(camera->front, vec3(0.0f, 1.0f, 0.0f)));
     camera->up = v3_norm(v3_cross(camera->right, camera->front));
-
-    Camera_debug(camera);
 }
