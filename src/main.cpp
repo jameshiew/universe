@@ -13,6 +13,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <sstream>
+#include <random>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -35,28 +36,14 @@ int main(int argc, char *argv[]) {
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
+    std::default_random_engine prng;
+    std::uniform_real_distribution<float> distribution(-100.f,100.f);
+
     GLuint texture = load_texture("../../textures/container.jpg");
-
-    float quadDim = pow(2.f, 8.f);
-    float floor[] = {
-            -quadDim, 0.0f, -quadDim, 64.0f, 64.0f,
-            -quadDim, 0.0f, quadDim, 64.0f, 0.0f,
-            quadDim, 0.0f, quadDim, 0.0f, 64.0f,
-            quadDim, 0.0f, -quadDim, 0.0f, 0.0f,
-    };
-    GLuint a, b;
-    glGenVertexArrays(1, &a);
-    glGenBuffers(1, &b);
-    glBindVertexArray(a);
-    glBindBuffer(GL_ARRAY_BUFFER, b);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), &floor, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
+    glm::vec3 positions[100];
+    for (int i = 0; i < 100; i++) {
+        positions[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
+    }
     double deltaTime, timeOfLastFrame = 0.0f;
     while (!glfwWindowShouldClose(A.window)) {
         double timeValue = glfwGetTime();
@@ -87,12 +74,6 @@ int main(int argc, char *argv[]) {
                     1, GL_FALSE, glm::value_ptr(view)
             );
 
-            auto model = glm::mat4();
-            glUniformMatrix4fv(
-                    glGetUniformLocation(polygonShader, "model"),
-                    1, GL_FALSE, glm::value_ptr(model)
-            );
-
             auto lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
             glUniform3fv(
                     glGetUniformLocation(polygonShader, "lightColor"),
@@ -101,12 +82,17 @@ int main(int argc, char *argv[]) {
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
-            // floor
-            glBindVertexArray(a);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             // other
             glBindVertexArray(p->vao);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
+            glm::mat4 model;
+            for (int i = 0; i < 100; i++) {
+                model = glm::translate(glm::mat4(), positions[i]);
+                glUniformMatrix4fv(
+                        glGetUniformLocation(polygonShader, "model"),
+                        1, GL_FALSE, glm::value_ptr(model)
+                );
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
+            }
         }
         renderUI(textShader, deltaTime, (float) width, (float) height);
 
