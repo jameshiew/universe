@@ -40,7 +40,7 @@ int main() {
 
     GLuint polygonShader = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
 
-    polygon *p = polygon_new();
+    Polygon *p = Cube_new();
     GLuint texture = load_texture("../../textures/container.jpg");
 
     mat4_t model, view, projection;
@@ -83,7 +83,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    polygon_free(p);
+    Polygon_free(p);
     glfwTerminate();
     return 0;
 }

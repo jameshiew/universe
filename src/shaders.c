@@ -17,7 +17,7 @@ GLuint make_shader(GLenum type, const char *source) {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE) {
         size_t length;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, (GLint *)&length);
         GLchar *info = calloc(length, sizeof(GLchar));
         glGetShaderInfoLog(shader, (GLsizei) length, NULL, info);
         fprintf(stderr, "glCompileShader failed:\n%s\n", info);

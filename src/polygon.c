@@ -10,8 +10,8 @@
 
 const size_t VERTEX_SIZE = 5 * sizeof(float);
 
-polygon *polygon_new() {
-    polygon *p = malloc(sizeof(polygon));
+Polygon *Cube_new() {
+    Polygon *p = malloc(sizeof(Polygon));
 
     p->numberOfVertices = 36;
     size_t v = p->numberOfVertices * VERTEX_SIZE;
@@ -104,7 +104,7 @@ polygon *polygon_new() {
     return p;
 }
 
-void polygon_free(polygon *polygon) {
+void Polygon_free(Polygon *polygon) {
     free(polygon->vertices);
     free(polygon->indices);
     free(polygon);

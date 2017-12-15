@@ -13,9 +13,9 @@ typedef struct polygon {
     GLuint vao;
     GLuint vbo;
     GLuint ebo;
-} polygon;
+} Polygon;
 
-polygon *polygon_new();
-void polygon_free(polygon *polygon);
+Polygon *Cube_new();
+void Polygon_free(Polygon *polygon);
 
 #endif //UNIVERSE_POLYGON_H
