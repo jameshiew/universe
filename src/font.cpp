@@ -7,11 +7,14 @@
 #include <string>
 #include "main.hpp"
 #include "font.hpp"
+#include "shaders.hpp"
 
 FT_Library library;
 FT_Face face;
 
 std::map<GLchar, Character> Characters;
+
+GLuint VAO, VBO;
 
 void initFont() {
     if (FT_Init_FreeType(&library)) {
@@ -61,10 +64,19 @@ void initFont() {
     glBindTexture(GL_TEXTURE_2D, 0);
     FT_Done_Face(face);
     FT_Done_FreeType(library);
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }
 
-void renderText(GLuint shaderProgram, GLuint VAO, GLuint VBO, std::string text, GLfloat x, GLfloat y, GLfloat scale,
-                glm::vec3 color) {
+void renderText(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     // Activate corresponding render state
     glUseProgram(shaderProgram);
     glUniform3f(glGetUniformLocation(shaderProgram, "textColor"), color.x, color.y, color.z);

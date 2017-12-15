@@ -41,22 +41,6 @@ int main(int argc, char *argv[]) {
     double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
 
-    // PERSPECTIVES
-    glm::mat4 projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
-    glm::mat4 orthographic = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW.width), 0.0f, static_cast<GLfloat>(WINDOW.height));
-
-    // TEXT VBO
-    GLuint VAO, VBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
     while (!glfwWindowShouldClose(window)) {
         // INPUT PROCESSING
         double timeValue = glfwGetTime();
@@ -72,6 +56,7 @@ int main(int argc, char *argv[]) {
         // 3D
         {
             glUseProgram(polygonShader);
+            auto projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(projective)
@@ -104,13 +89,13 @@ int main(int argc, char *argv[]) {
         // 2D UI
         {
             glUseProgram(textShader);
-            glm::mat4 model, view;
+            auto orthographic = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW.width), 0.0f, static_cast<GLfloat>(WINDOW.height));
             glUniformMatrix4fv(
                     glGetUniformLocation(textShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(orthographic)
             );
-            renderText(textShader, VAO, VBO, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-            renderText(textShader, VAO, VBO, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+            renderText(textShader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+            renderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
         }
 
         // next!
