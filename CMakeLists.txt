@@ -12,9 +12,6 @@ include_directories(vendor/glad/include/)
 
 # stb_image
 include_directories(vendor/stb/)
-
-# freetype-gl
-include_directories(vendor/freetype-gl/)
 # -----------------------------
 
 # --- Final executable ---

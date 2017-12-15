@@ -9,12 +9,6 @@
 
 #include "render.hpp"
 
-void print_debug_output() {
-    GLint numberOfAttributes;
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numberOfAttributes);
-    fprintf(stdout, "Maximum vertex attributes: %d\n", numberOfAttributes);
-}
-
 GLuint load_texture(const char *texturePath) {
     GLuint texture;
     glGenTextures(1, &texture);

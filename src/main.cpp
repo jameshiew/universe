@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     initFont();
-    print_debug_output();
 
     glfwWindowHint(GLFW_SAMPLES, 16);
     glEnable(GL_MULTISAMPLE);
