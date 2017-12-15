@@ -31,6 +31,9 @@ int main(int argc, char *argv[]) {
     initFont();
     print_debug_output();
 
+    glfwWindowHint(GLFW_SAMPLES, 16);
+    glEnable(GL_MULTISAMPLE);
+
     GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
