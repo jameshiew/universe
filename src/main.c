@@ -8,7 +8,7 @@
 #include "input.h"
 #include "shaders.h"
 #include "render.h"
-#include "Polygon.h"
+#include "polygon.h"
 #include "window.h"
 #include "main.h"
 
