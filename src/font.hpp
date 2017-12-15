@@ -16,6 +16,6 @@ typedef struct Character {
     GLuint     Advance;    // Offset to advance to next glyph
 } Character;
 
-void renderText(GLuint shaderProgram, GLuint VAO, GLuint VBO, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+void renderText(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 #endif //UNIVERSE_FONT_H

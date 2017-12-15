@@ -16,5 +16,4 @@ extern Window WINDOW;
 extern FT_Library library;
 extern FT_Face face;
 extern std::map<GLchar, Character> Characters;
-
 #endif //UNIVERSE_MAIN_H
