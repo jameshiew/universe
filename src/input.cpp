@@ -3,6 +3,7 @@
 #include "input.hpp"
 #include "util.hpp"
 #include "window.hpp"
+#include "space.hpp"
 
 void processInput(GLFWwindow *window, double deltaTime) {
     auto *WINDOW = (Window *) glfwGetWindowUserPointer(window);
@@ -73,6 +74,6 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     front.y = sinf(radians(camera->pitch));
     front.z = cosf(radians(camera->pitch)) * sinf(radians(camera->yaw));
     camera->front = glm::normalize(front);
-    camera->right = glm::normalize(glm::cross(camera->front, glm::vec3(0.0f, 1.0f, 0.0f)));
+    camera->right = glm::normalize(glm::cross(camera->front, UP));
     camera->up = glm::normalize(glm::cross(camera->right, camera->front));
 }

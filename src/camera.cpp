@@ -10,14 +10,13 @@
 
 #include "camera.hpp"
 #include "main.hpp"
-
-glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+#include "space.hpp"
 
 Camera *Camera_new() {
     auto *camera = (Camera *) malloc(sizeof(Camera));
     camera->position = glm::vec3(0.0f, 2.0f, 2.0f);
     camera->behind = glm::normalize(camera->position);
-    camera->right = glm::normalize(glm::cross(up, camera->behind));
+    camera->right = glm::normalize(glm::cross(UP, camera->behind));
     camera->up = glm::cross(camera->behind, camera->right);
     camera->front = -camera->position;
     camera->speed = 2.5f;
