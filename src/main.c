@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <math.h>
 
 #include "input.h"
@@ -46,19 +45,6 @@ int main() {
 
     mat4_t model, view, projection;
 
-    vec3_t cubePositions[] = {
-        vec3( 0.0f,  0.0f,  0.0f),
-        vec3( 2.0f,  5.0f, -15.0f),
-        vec3(-1.5f, -2.2f, -2.5f),
-        vec3(-3.8f, -2.0f, -12.3f),
-        vec3( 2.4f, -0.4f, -3.5f),
-        vec3(-1.7f,  3.0f, -7.5f),
-        vec3( 1.3f, -2.0f, -2.5f),
-        vec3( 1.5f,  2.0f, -2.5f),
-        vec3( 1.5f,  0.2f, -1.5f),
-        vec3(-1.3f,  1.0f, -1.5f),
-    };
-
     glUseProgram(polygonShader);
     WINDOW.camera = Camera_new();
     glfwSetCursorPos(window, WINDOW.camera->lastX, WINDOW.camera->lastY);
@@ -88,13 +74,10 @@ int main() {
         glBindVertexArray(p->vao);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        for (unsigned int i = 0; i < 10; i++) {
-            model = m4_translation(cubePositions[i]);
-            model = m4_mul(model, m4_rotation((float) sin(timeValue), vec3(1.0f, 0.3f, 0.5f)));
-            GLint modelUniformLocation = glGetUniformLocation(polygonShader, "model");
-            glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
+        model = m4_rotation((float) sin(timeValue), vec3(1.0f, 0.3f, 0.5f));
+        GLint modelUniformLocation = glGetUniformLocation(polygonShader, "model");
+        glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glfwSwapBuffers(window);
         glfwPollEvents();
