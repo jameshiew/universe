@@ -1,5 +1,5 @@
 #include <GLFW/glfw3.h>
-#include <stdio.h>
+#include <cstdio>
 
 #include "input.hpp"
 #include "util.hpp"

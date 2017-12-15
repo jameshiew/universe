@@ -2,11 +2,11 @@
 // Created by James Hiew on 12/12/2017.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cerrno>
 #include <string.h>
-#include <math.h>
+#include <cmath>
 
 #include "util.hpp"
 

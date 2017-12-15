@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 
-#include <stdio.h>
+#include <cstdio>
 #include <stb_image.h>
 
 #include "render.hpp"

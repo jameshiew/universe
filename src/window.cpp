@@ -3,7 +3,7 @@
 //
 
 #include <glad/glad.h>
-#include <stdio.h>
+#include <cstdio>
 #include "window.hpp"
 
 Window WINDOW = {

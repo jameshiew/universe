@@ -1,8 +1,8 @@
 //
 // Created by James Hiew on 12/12/2017.
 //
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 #include <glad/glad.h>
 #include <memory.h>
 

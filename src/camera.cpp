@@ -1,8 +1,8 @@
 //
 // Created by James Hiew on 13/12/2017.
 //
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 #include "camera.hpp"
 #include "main.hpp"

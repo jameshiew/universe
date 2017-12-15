@@ -3,8 +3,8 @@
 //
 
 #include <glad/glad.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "shaders.hpp"
 #include "util.hpp"
