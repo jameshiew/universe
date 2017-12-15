@@ -14,55 +14,44 @@ Polygon *Cube_new(VERTEX_TYPE vertexType) {
     Polygon *p = malloc(sizeof(Polygon));
     p->vertexType = vertexType;
 
-    p->numberOfVertices = 36;
+    p->numberOfVertices = 24;
     size_t v = p->numberOfVertices * VERTEX_SIZE;
     p->vertices = malloc(v);
     float vertices[] = {
-            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-            -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-
-            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
+            // south
+            0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+            // east
+            1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+            1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            // north
+            1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            // west
+            0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+            // down
+            0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            // up
+            0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
     };
     memcpy(p->vertices, vertices, v);
 
-    p->numberOfTriangles = 2;
+    p->numberOfTriangles = 12;
     size_t t = p->numberOfTriangles * VERTEX_SIZE;
     p->indices = malloc(t);
     unsigned int indices[] = {  // note that we start from 0!
