@@ -6,17 +6,8 @@
 #include <cstdio>
 #include "window.hpp"
 
-Window WINDOW = {
-    ._glfw = 0,
-    .paused = false,
-    .width = DEFAULT_WINDOW_WIDTH,
-    .height = DEFAULT_WINDOW_HEIGHT
-};
-
 void resize_viewport(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
-    WINDOW.width = width;
-    WINDOW.height = height;
 }
 
 GLFWwindow *initWindow() {
@@ -26,12 +17,11 @@ GLFWwindow *initWindow() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow *window = glfwCreateWindow(WINDOW.width, WINDOW.height, "Universe", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "Universe", NULL, NULL);
     if (window == NULL) {
         fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
     }
-    glfwSetWindowUserPointer(window, &WINDOW);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, resize_viewport);
 
