@@ -14,6 +14,9 @@ include_directories(vendor/stb/)
 
 # single-header-file-c-libs
 include_directories(vendor/single-header-file-c-libs/)
+
+# freetype-gl
+include_directories(vendor/freetype-gl/)
 # -----------------------------
 
 # --- Final executable ---
@@ -24,6 +27,6 @@ add_executable(universe
     ${SOURCE_FILES}
     ${GLAD_SOURCE_FILES}
     ${GRAPHENE_SOURCE_FILES}
-        src/window.c src/window.h src/main.h src/camera.c src/camera.h)
+)
 target_link_libraries(universe ${CONAN_LIBS})
 # ------------------------------

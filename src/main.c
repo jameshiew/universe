@@ -10,6 +10,7 @@
 #include "render.h"
 #include "polygon.h"
 #include "window.h"
+#include "font.h"
 #include "main.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -27,17 +28,8 @@ int main() {
     glEnable(GL_BLEND);
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    initFont();
     print_debug_output();
-
-    if (FT_Init_FreeType(&library)) {
-        fprintf(stderr, "Could not init freetype library\n");
-        return 1;
-    }
-    if (FT_New_Face(library, "../../fonts/FreeSans.ttf", 0, &face)) {
-        fprintf(stderr, "Could not open font\n");
-        return 1;
-    }
-    FT_Set_Pixel_Sizes(face, 0, 48);
 
     GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
 

@@ -11,7 +11,7 @@
 #include FT_FREETYPE_H
 
 extern Window WINDOW;
-FT_Library library;
-FT_Face face;
+extern FT_Library library;
+extern FT_Face face;
 
 #endif //UNIVERSE_MAIN_H
