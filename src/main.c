@@ -38,7 +38,7 @@ int main() {
     }
     FT_Set_Pixel_Sizes(face, 0, 48);
 
-    GLuint polygonShader = load_program("../../shaders/basic.vert", "../../shaders/basic.frag");
+    GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
 
     Polygon *p = Cube_new();
     GLuint texture = load_texture("../../textures/container.jpg");
@@ -67,6 +67,10 @@ int main() {
         view = m4_look_at(WINDOW.camera->position, v3_add(WINDOW.camera->position, WINDOW.camera->front), WINDOW.camera->up);
         GLint viewUniformLocation = glGetUniformLocation(polygonShader, "view");
         glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, (const GLfloat *)&view);
+
+        vec3_t lightColor = vec3(1.0f, 1.0f, 1.0f);
+        GLint lightColorUniformLocation = glGetUniformLocation(polygonShader, "lightColor");
+        glUniform3fv(lightColorUniformLocation, 1, (const GLfloat *)&lightColor);
 
         // DRAW
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
