@@ -8,7 +8,7 @@
 #include "input.h"
 #include "shaders.h"
 #include "render.h"
-#include "polygon.h"
+#include "Polygon.h"
 #include "window.h"
 #include "main.h"
 
@@ -40,7 +40,7 @@ int main() {
 
     GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
 
-    Polygon *p = Cube_new();
+    Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
     GLuint texture = load_texture("../../textures/container.jpg");
 
     mat4_t model, view, projection;

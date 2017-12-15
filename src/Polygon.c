@@ -10,8 +10,9 @@
 
 const size_t VERTEX_SIZE = 5 * sizeof(float);
 
-Polygon *Cube_new() {
+Polygon *Cube_new(VERTEX_TYPE vertexType) {
     Polygon *p = malloc(sizeof(Polygon));
+    p->vertexType = vertexType;
 
     p->numberOfVertices = 36;
     size_t v = p->numberOfVertices * VERTEX_SIZE;
