@@ -2,8 +2,8 @@
 // Created by James Hiew on 15/12/2017.
 //
 
-#include "main.h"
-#include "font.h"
+#include "main.hpp"
+#include "font.hpp"
 
 FT_Library library;
 FT_Face face;

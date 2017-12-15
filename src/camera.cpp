@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "camera.h"
-#include "main.h"
+#include "camera.hpp"
+#include "main.hpp"
 
 Camera *Camera_new() {
-    Camera *camera = malloc(sizeof(Camera));
+    Camera *camera = (Camera *) malloc(sizeof(Camera));
     camera->position = vec3(0.0f, 0.0f, 3.0f);
     camera->behind = v3_norm(v3_sub(camera->position, vec3(0.0f, 0.0f, 0.0f)));
     vec3_t up = vec3(0.0f, 1.0f, 0.0f);

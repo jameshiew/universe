@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "input.h"
-#include "shaders.h"
-#include "render.h"
-#include "polygon.h"
-#include "window.h"
-#include "font.h"
-#include "main.h"
+#include "input.hpp"
+#include "shaders.hpp"
+#include "render.hpp"
+#include "polygon.hpp"
+#include "window.hpp"
+#include "font.hpp"
+#include "main.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -19,7 +19,7 @@
 #define MATH_3D_IMPLEMENTATION
 #include "math_3d.h"
 
-int main() {
+int main(int argc, char *argv[]) {
     GLFWwindow *window = initWindow();
     if (window == NULL) {
         return -1;

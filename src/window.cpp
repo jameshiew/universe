@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 #include <stdio.h>
-#include "window.h"
+#include "window.hpp"
 
 Window WINDOW = {
     ._glfw = 0,

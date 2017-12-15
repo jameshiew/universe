@@ -6,17 +6,17 @@
 #include <glad/glad.h>
 #include <memory.h>
 
-#include "polygon.h"
+#include "polygon.hpp"
 
 const size_t VERTEX_SIZE = 5 * sizeof(float);
 
 Polygon *Cube_new(VERTEX_TYPE vertexType) {
-    Polygon *p = malloc(sizeof(Polygon));
+    Polygon *p = (Polygon *) malloc(sizeof(Polygon));
     p->vertexType = vertexType;
 
     p->numberOfVertices = 24;
     size_t v = p->numberOfVertices * VERTEX_SIZE;
-    p->vertices = malloc(v);
+    p->vertices = (float *) malloc(v);
     float vertices[] = {
             // south
             0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
@@ -53,7 +53,7 @@ Polygon *Cube_new(VERTEX_TYPE vertexType) {
 
     p->numberOfTriangles = 12;
     size_t t = p->numberOfTriangles * VERTEX_SIZE;
-    p->indices = malloc(t);
+    p->indices = (unsigned int *) malloc(t);
     unsigned int indices[] = {  // note that we start from 0!
             0, 1, 2,  // first Triangle
             0, 2, 3,  // second Triangle

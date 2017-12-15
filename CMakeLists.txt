@@ -1,6 +1,6 @@
 # --- Project info ---
 cmake_minimum_required(VERSION 3.9)
-project(universe C)
+project(universe)
 set(CMAKE_CXX_STANDARD 17)
 # --------------------
 
@@ -22,7 +22,7 @@ include_directories(vendor/freetype-gl/)
 # --- Final executable ---
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
-file(GLOB SOURCE_FILES src/*.c)
+file(GLOB SOURCE_FILES src/*.cpp)
 add_executable(universe
     ${SOURCE_FILES}
     ${GLAD_SOURCE_FILES}

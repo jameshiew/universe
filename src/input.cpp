@@ -1,13 +1,12 @@
 #include <GLFW/glfw3.h>
-#include <stdbool.h>
 #include <stdio.h>
 
-#include "input.h"
-#include "util.h"
-#include "window.h"
+#include "input.hpp"
+#include "util.hpp"
+#include "window.hpp"
 
 void processInput(GLFWwindow *window, double deltaTime) {
-    Window *WINDOW = glfwGetWindowUserPointer(window);
+    Window *WINDOW = (Window *) glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     float speed = camera->speed * (float) deltaTime;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
@@ -37,7 +36,7 @@ void processInput(GLFWwindow *window, double deltaTime) {
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
-    Window *WINDOW = glfwGetWindowUserPointer(window);
+    Window *WINDOW = (Window *) glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     static bool firstTime = true;
     if (firstTime) {

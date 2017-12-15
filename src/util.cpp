@@ -8,7 +8,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "util.h"
+#include "util.hpp"
 
 char *load_file(const char *path) {
     FILE *file = fopen(path, "rb");
@@ -19,12 +19,12 @@ char *load_file(const char *path) {
     fseek(file, 0, SEEK_END);
     size_t length = (size_t) ftell(file);
     rewind(file);
-    char *data = calloc(length + 1, sizeof(char));
+    char *data = (char *) calloc(length + 1, sizeof(char));
     fread(data, 1, length, file);
     fclose(file);
     return data;
 }
 
-inline float radians(float degrees) {
+float radians(float degrees) {
     return degrees * (float) (M_PI / 180.0);
 }

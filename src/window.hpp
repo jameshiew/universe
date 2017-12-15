@@ -6,8 +6,8 @@
 #define UNIVERSE_WINDOW_H
 
 #include <GLFW/glfw3.h>
-#include "config.h"
-#include "camera.h"
+#include "config.hpp"
+#include "camera.hpp"
 
 
 typedef struct Window {

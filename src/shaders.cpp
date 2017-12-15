@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "shaders.h"
-#include "util.h"
+#include "shaders.hpp"
+#include "util.hpp"
 
 GLuint make_shader(GLenum type, const char *source) {
     GLuint shader = glCreateShader(type);
@@ -18,7 +18,7 @@ GLuint make_shader(GLenum type, const char *source) {
     if (status == GL_FALSE) {
         size_t length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, (GLint *)&length);
-        GLchar *info = calloc(length, sizeof(GLchar));
+        GLchar *info = (GLchar *) calloc(length, sizeof(GLchar));
         glGetShaderInfoLog(shader, (GLsizei) length, NULL, info);
         fprintf(stderr, "glCompileShader failed:\n%s\n", info);
         free(info);
@@ -50,7 +50,7 @@ GLuint make_program(GLuint vertexShader, GLuint fragmentShader) {
     if (status == GL_FALSE) {
         size_t length;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, (GLint *)&length);
-        GLchar *info = calloc(length, sizeof(GLchar));
+        GLchar *info = (GLchar *) calloc(length, sizeof(GLchar));
         glGetProgramInfoLog(program, (GLsizei) length, NULL, info);
         fprintf(stderr, "glLinkProgram failed: %s\n", info);
         free(info);

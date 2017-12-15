@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stb_image.h>
 
-#include "render.h"
+#include "render.hpp"
 
 void print_debug_output() {
     GLint numberOfAttributes;

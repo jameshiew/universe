@@ -6,7 +6,7 @@
 #define UNIVERSE_INPUT_H
 
 #include <GLFW/glfw3.h>
-#include "camera.h"
+#include "camera.hpp"
 
 void processInput(GLFWwindow *window, double deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);

@@ -5,7 +5,7 @@
 #ifndef UNIVERSE_MAIN_H
 #define UNIVERSE_MAIN_H
 
-#include "window.h"
+#include "window.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
