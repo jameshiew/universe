@@ -68,7 +68,7 @@ int main() {
         glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, (const GLfloat *)&view);
 
         // DRAW
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // polygons
         glBindVertexArray(p->vao);
