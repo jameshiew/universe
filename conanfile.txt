@@ -1,5 +1,6 @@
 [requires]
 glfw/3.2.1@bincrafters/stable
+freetype/2.8.1@bincrafters/stable
 
 [generators]
 cmake
