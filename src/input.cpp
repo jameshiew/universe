@@ -49,12 +49,6 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
         return;
     }
     Camera *camera = WINDOW->camera;
-    static bool firstTime = true;
-    if (firstTime) {
-        camera->lastX = xpos;
-        camera->lastY = ypos;
-        firstTime = false;
-    }
 
     float xoffset = xpos - camera->lastX;
     float yoffset = camera->lastY - ypos; // reversed since y-coordinates range from bottom to top
