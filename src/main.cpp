@@ -14,6 +14,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <sstream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -50,7 +51,7 @@ int main(int argc, char *argv[]) {
         processInput(window, deltaTime);
 
         // DRAW
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.f, 0.f, 0.f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 3D
@@ -94,8 +95,17 @@ int main(int argc, char *argv[]) {
                     glGetUniformLocation(textShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(orthographic)
             );
-            renderText(textShader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-            renderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+
+            std::ostringstream s_frametime;
+            s_frametime << "Frametime: " << (unsigned int) (deltaTime * 1000) << "ms";
+            std::string frametime = s_frametime.str();
+
+            std::ostringstream s_coords;
+            s_coords << "Position: (" << round(WINDOW.camera->position.x) << ", " << round(WINDOW.camera->position.y) << ", " << round(WINDOW.camera->position.z) << ")";
+            std::string coords = s_coords.str();
+
+            renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+            renderText(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
         }
 
         // next!
