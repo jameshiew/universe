@@ -48,7 +48,6 @@ int main() {
 
     glUseProgram(polygonShader);
     WINDOW.camera = Camera_new();
-    glfwSetCursorPos(window, WINDOW.camera->lastX, WINDOW.camera->lastY);
     glfwSetCursorPosCallback(window, mouse_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
