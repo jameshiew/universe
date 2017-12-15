@@ -14,6 +14,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -30,50 +31,89 @@ int main(int argc, char *argv[]) {
     print_debug_output();
 
     GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
+    GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
     GLuint texture = load_texture("../../textures/container.jpg");
 
-    glm::mat4 model, view, projection;
-
-    glUseProgram(polygonShader);
     WINDOW.camera = Camera_new();
     glfwSetCursorPosCallback(window, mouse_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
+
+    // PERSPECTIVES
+    glm::mat4 projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
+    glm::mat4 orthographic = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW.width), 0.0f, static_cast<GLfloat>(WINDOW.height));
+
+    // TEXT VBO
+    GLuint VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
     while (!glfwWindowShouldClose(window)) {
         // INPUT PROCESSING
         double timeValue = glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
-        printf("Frame time: %fms\n", deltaTime * 1000);
+//        printf("Frame time: %fms\n", deltaTime * 1000);
         processInput(window, deltaTime);
 
-        // MATRICES
-        projection = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
-        GLint projectionUniformLocation = glGetUniformLocation(polygonShader, "projection");
-        glUniformMatrix4fv(projectionUniformLocation, 1, GL_FALSE, (const GLfloat *)&projection);
-
-        view = glm::lookAt(WINDOW.camera->position, WINDOW.camera->position + WINDOW.camera->front, WINDOW.camera->up);
-        GLint viewUniformLocation = glGetUniformLocation(polygonShader, "view");
-        glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, (const GLfloat *)&view);
-
-        glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-        GLint lightColorUniformLocation = glGetUniformLocation(polygonShader, "lightColor");
-        glUniform3fv(lightColorUniformLocation, 1, (const GLfloat *)&lightColor);
-
         // DRAW
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        // polygons
-        glBindVertexArray(p->vao);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        model = glm::rotate(glm::mat4(), (float) sin(timeValue), glm::vec3(1.0f, 0.3f, 0.5f));
-        GLint modelUniformLocation = glGetUniformLocation(polygonShader, "model");
-        glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, (const GLfloat *)&model);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
-        glBindVertexArray(0);
+
+        // 3D
+        {
+            glUseProgram(polygonShader);
+            glUniformMatrix4fv(
+                    glGetUniformLocation(polygonShader, "projection"),
+                    1, GL_FALSE, glm::value_ptr(projective)
+            );
+
+            auto view = glm::lookAt(WINDOW.camera->position, WINDOW.camera->position + WINDOW.camera->front, WINDOW.camera->up);
+            glUniformMatrix4fv(
+                    glGetUniformLocation(polygonShader, "view"),
+                    1, GL_FALSE, glm::value_ptr(view)
+            );
+
+            auto model = glm::rotate(glm::mat4(), (float) sin(timeValue), glm::vec3(1.0f, 0.3f, 0.5f));
+            glUniformMatrix4fv(
+                    glGetUniformLocation(polygonShader, "model"),
+                    1, GL_FALSE, glm::value_ptr(model)
+            );
+
+            auto lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+            glUniform3fv(
+                    glGetUniformLocation(polygonShader, "lightColor"),
+                    1, glm::value_ptr(lightColor)
+            );
+
+            glBindVertexArray(p->vao);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
+        }
+
+        // 2D UI
+        {
+            glUseProgram(textShader);
+            glm::mat4 model, view;
+            glUniformMatrix4fv(
+                    glGetUniformLocation(textShader, "projection"),
+                    1, GL_FALSE, glm::value_ptr(orthographic)
+            );
+            renderText(textShader, VAO, VBO, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+            renderText(textShader, VAO, VBO, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+        }
+
+        // next!
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
