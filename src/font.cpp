@@ -12,7 +12,7 @@ FT_Face face;
 
 std::map<GLchar, Character> Characters;
 
-GLuint VAO, VBO;
+GLuint textVAO, textVBO;
 
 void initFont() {
     if (FT_Init_FreeType(&library)) {
@@ -59,14 +59,13 @@ void initFont() {
         };
         Characters.insert(std::pair<GLchar, Character>(c, character));
     }
-    glBindTexture(GL_TEXTURE_2D, 0);
     FT_Done_Face(face);
     FT_Done_FreeType(library);
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glGenVertexArrays(1, &textVAO);
+    glGenBuffers(1, &textVBO);
+    glBindVertexArray(textVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -79,7 +78,7 @@ void renderText(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GL
     glUseProgram(shaderProgram);
     glUniform3f(glGetUniformLocation(shaderProgram, "textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(VAO);
+    glBindVertexArray(textVAO);
 
     // Iterate through all characters
     std::string::const_iterator c;
@@ -104,7 +103,7 @@ void renderText(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GL
         // Render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         // Update content of VBO memory
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // Render quad
