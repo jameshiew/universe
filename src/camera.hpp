@@ -9,15 +9,17 @@
 
 typedef struct Camera {
     glm::vec3 position;
-    glm::vec3 behind;  // actually a vector pointing opposite to what we are looking at...
+    glm::vec3 behind;
     glm::vec3 right;
     glm::vec3 up;
     glm::vec3 front;
     float yaw;
     float pitch;
     float roll;
+
     float speed;
     float sensitivity;
+
     double lastX;
     double lastY;
 } Camera;

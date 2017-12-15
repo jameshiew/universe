@@ -123,15 +123,15 @@ int main(int argc, char *argv[]) {
             );
 
             std::ostringstream s_frametime;
-            s_frametime << "Frametime: " << (unsigned int) (deltaTime * 1000) << "ms";
+            s_frametime << "F: " << (unsigned int) (deltaTime * 1000) << "ms";
             std::string frametime = s_frametime.str();
 
             std::ostringstream s_coords;
-            s_coords << "Position: (" << round(WINDOW.camera->position.x) << ", " << round(WINDOW.camera->position.y) << ", " << round(WINDOW.camera->position.z) << ")";
+            s_coords << "P: (" << round(WINDOW.camera->position.x) << ", " << round(WINDOW.camera->position.y) << ", " << round(WINDOW.camera->position.z) << ")";
             std::string coords = s_coords.str();
 
             std::ostringstream s_viewport;
-            s_viewport << "Viewport: " << WINDOW.width << "x" << WINDOW.height;
+            s_viewport << "V: " << WINDOW.width << "x" << WINDOW.height << " M: " << WINDOW.camera->lastX << ", " << WINDOW.camera->lastY;
             std::string viewport = s_viewport.str();
 
             renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
