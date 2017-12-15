@@ -22,6 +22,9 @@ typedef struct Camera {
 
     double lastX;
     double lastY;
+
+    // rendering options
+    bool wireframe;
 } Camera;
 
 Camera *Camera_new();
