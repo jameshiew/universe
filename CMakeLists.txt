@@ -12,6 +12,9 @@ include_directories(vendor/glad/include/)
 
 # stb_image
 include_directories(vendor/stb/)
+
+# quadtree
+include_directories(vendor/quadtree/src/)
 # -----------------------------
 
 # --- Final executable ---
