@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         // 3D
         {
             glUseProgram(polygonShader);
-            auto projective = glm::perspective(70.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 10000.0f);
+            auto projective = glm::perspective(70.0f, static_cast<GLfloat>(WINDOW.width) / static_cast<GLfloat>(WINDOW.height), 0.1f, 1000.0f);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(projective)
