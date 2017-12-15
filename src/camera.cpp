@@ -22,10 +22,15 @@ Camera *Camera_new() {
     camera->speed = 2.5f;
     camera->pitch = 0.0f;
     camera->yaw = -90.0f;
+
+    // TODO: camera controller
     camera->roll = 0.0f;
     camera->sensitivity = 0.1f;
+
     camera->lastX = (float) DEFAULT_WINDOW_WIDTH / 2.f;
     camera->lastY = (float) DEFAULT_WINDOW_HEIGHT / 2.f;
+
+    camera->wireframe = false;
     return camera;
 }
 

@@ -8,6 +8,7 @@ void processInput(GLFWwindow *window, double deltaTime) {
     auto *WINDOW = (Application *)glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     float speed = camera->speed * (float) deltaTime;
+    static bool wireframe = false;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         speed *= 2.f;
     }
@@ -43,6 +44,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
         WINDOW->paused = !WINDOW->paused;
+    } else if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        WINDOW->camera->wireframe = !WINDOW->camera->wireframe;
     }
 }
 

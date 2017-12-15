@@ -12,6 +12,7 @@
 
 void renderUI(GLuint textShader, float deltaTime, float width, float height) {
     glUseProgram(textShader);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // we don't render text in wireframe
     auto orthographic = glm::ortho(0.0f, width, 0.0f, height);
     glUniformMatrix4fv(
             glGetUniformLocation(textShader, "projection"),
