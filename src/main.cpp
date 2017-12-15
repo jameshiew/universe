@@ -18,11 +18,16 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+Application A = {
+    .paused = false,
+};
+
 int main(int argc, char *argv[]) {
-    GLFWwindow *window = initWindow();
-    if (window == nullptr) {
+    A.window = initWindow();
+    if (A.window == nullptr) {
         return -1;
     }
+    glfwSetWindowUserPointer(A.window, &A);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_CULL_FACE);
@@ -38,9 +43,9 @@ int main(int argc, char *argv[]) {
     Polygon *p = Cube_new(VERTEX_TYPE_TEXTURED);
     GLuint texture = load_texture("../../textures/container.jpg");
 
-    WINDOW.camera = Camera_new();
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetKeyCallback(window, key_callback);
+    A.camera = Camera_new();
+    glfwSetCursorPosCallback(A.window, mouse_callback);
+    glfwSetKeyCallback(A.window, key_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
 
     float quadDim = pow(2.f, 8.f);
@@ -63,8 +68,10 @@ int main(int argc, char *argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    while (!glfwWindowShouldClose(window)) {
-        processInput(window, deltaTime);
+    while (!glfwWindowShouldClose(A.window)) {
+        processInput(A.window, deltaTime);
+        int width, height;
+        glfwGetFramebufferSize(A.window, &width, &height);
         // INPUT PROCESSING
         double timeValue = glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
@@ -77,13 +84,13 @@ int main(int argc, char *argv[]) {
         // 3D
         {
             glUseProgram(polygonShader);
-            auto projective = glm::perspective(70.0f, static_cast<GLfloat>(WINDOW.width) / static_cast<GLfloat>(WINDOW.height), 0.1f, 1000.0f);
+            auto projective = glm::perspective(70.0f, static_cast<GLfloat>(width) / static_cast<GLfloat>(height), 0.1f, 1000.0f);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(projective)
             );
 
-            auto view = glm::lookAt(WINDOW.camera->position, WINDOW.camera->position + WINDOW.camera->front, WINDOW.camera->up);
+            auto view = glm::lookAt(A.camera->position, A.camera->position + A.camera->front, A.camera->up);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "view"),
                     1, GL_FALSE, glm::value_ptr(view)
@@ -115,7 +122,7 @@ int main(int argc, char *argv[]) {
         // 2D UI
         {
             glUseProgram(textShader);
-            auto orthographic = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW.width), 0.0f, static_cast<GLfloat>(WINDOW.height));
+            auto orthographic = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
             glUniformMatrix4fv(
                     glGetUniformLocation(textShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(orthographic)
@@ -126,11 +133,11 @@ int main(int argc, char *argv[]) {
             std::string frametime = s_frametime.str();
 
             std::ostringstream s_coords;
-            s_coords << "P: (" << round(WINDOW.camera->position.x) << ", " << round(WINDOW.camera->position.y) << ", " << round(WINDOW.camera->position.z) << ")";
+            s_coords << "P: (" << round(A.camera->position.x) << ", " << round(A.camera->position.y) << ", " << round(A.camera->position.z) << ")";
             std::string coords = s_coords.str();
 
             std::ostringstream s_viewport;
-            s_viewport << "V: " << WINDOW.width << "x" << WINDOW.height << " M: " << WINDOW.camera->lastX << ", " << WINDOW.camera->lastY;
+            s_viewport << "V: " << width << "x" << height << " M: " << A.camera->lastX << ", " << A.camera->lastY;
             std::string viewport = s_viewport.str();
 
             renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
@@ -139,7 +146,7 @@ int main(int argc, char *argv[]) {
         }
 
         // next!
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(A.window);
         glfwPollEvents();
     }
     Polygon_free(p);

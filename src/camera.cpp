@@ -24,8 +24,8 @@ Camera *Camera_new() {
     camera->yaw = -90.0f;
     camera->roll = 0.0f;
     camera->sensitivity = 0.1f;
-    camera->lastX = (float) WINDOW.width / 2.f;
-    camera->lastY = (float) WINDOW.height / 2.f;
+    camera->lastX = (float) DEFAULT_WINDOW_WIDTH / 2.f;
+    camera->lastY = (float) DEFAULT_WINDOW_HEIGHT / 2.f;
     return camera;
 }
 
