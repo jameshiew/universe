@@ -5,6 +5,8 @@
 #ifndef UNIVERSE_CONFIG_H
 #define UNIVERSE_CONFIG_H
 
+#include <GLFW/glfw3.h>
+
 #import "camera.hpp"
 
 typedef struct Application {

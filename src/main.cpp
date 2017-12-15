@@ -6,7 +6,6 @@
 
 #include "input.hpp"
 #include "shaders.hpp"
-#include "render.hpp"
 #include "polygon.hpp"
 #include "window.hpp"
 #include "font.hpp"
@@ -17,6 +16,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "render.hpp"
 
 Application A = {
     .paused = false,
@@ -108,32 +108,7 @@ int main(int argc, char *argv[]) {
             glBindVertexArray(p->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
         }
-
-        // 2D UI
-        {
-            glUseProgram(textShader);
-            auto orthographic = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
-            glUniformMatrix4fv(
-                    glGetUniformLocation(textShader, "projection"),
-                    1, GL_FALSE, glm::value_ptr(orthographic)
-            );
-
-            std::ostringstream s_frametime;
-            s_frametime << "F: " << (unsigned int) (deltaTime * 1000) << "ms";
-            std::string frametime = s_frametime.str();
-
-            std::ostringstream s_coords;
-            s_coords << "P: (" << round(A.camera->position.x) << ", " << round(A.camera->position.y) << ", " << round(A.camera->position.z) << ")";
-            std::string coords = s_coords.str();
-
-            std::ostringstream s_viewport;
-            s_viewport << "V: " << width << "x" << height << " M: " << A.camera->lastX << ", " << A.camera->lastY;
-            std::string viewport = s_viewport.str();
-
-            renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-            renderText(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-            renderText(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-        }
+        renderUI(textShader, deltaTime, (float) width, (float) height);
 
         // next!
         glfwSwapBuffers(A.window);

@@ -4,7 +4,7 @@
 
 #ifndef UNIVERSE_RENDER_H
 #define UNIVERSE_RENDER_H
+#include <glad/glad.h>
 
-GLuint load_texture(const char* texturePath);
-
+void renderUI(GLuint textShader, float deltaTime, float width, float height);
 #endif //UNIVERSE_RENDER_H
