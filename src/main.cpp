@@ -28,14 +28,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     glfwSetWindowUserPointer(A.window, &A);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     initFont();
-
-    glfwWindowHint(GLFW_SAMPLES, 16);
-    glEnable(GL_MULTISAMPLE);
 
     GLuint polygonShader = load_program("../../shaders/phong.vert", "../../shaders/phong.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
@@ -44,8 +37,6 @@ int main(int argc, char *argv[]) {
     GLuint texture = load_texture("../../textures/container.jpg");
 
     A.camera = Camera_new();
-    glfwSetCursorPosCallback(A.window, mouse_callback);
-    glfwSetKeyCallback(A.window, key_callback);
     double deltaTime, timeOfLastFrame = 0.0f;
 
     float quadDim = pow(2.f, 8.f);
@@ -107,7 +98,6 @@ int main(int argc, char *argv[]) {
                     glGetUniformLocation(polygonShader, "lightColor"),
                     1, glm::value_ptr(lightColor)
             );
-
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
