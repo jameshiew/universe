@@ -13,12 +13,12 @@
 
 Camera *Camera_new() {
     auto *camera = (Camera *) malloc(sizeof(Camera));
-    camera->position = glm::vec3(0.0f, 0.0f, 3.0f);
+    camera->position = glm::vec3(0.0f, 3.0f, 3.0f);
     camera->behind = glm::normalize(camera->position - glm::vec3(0.0f, 0.0f, 0.0f));
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
     camera->right = glm::normalize(glm::cross(up, camera->behind));
     camera->up = glm::cross(camera->behind, camera->right);
-    camera->front = glm::vec3(0.0f, 0.0f, -1.0f);
+    camera->front = glm::vec3(0.0f, -3.0f, -3.0f);
     camera->speed = 2.5f;
     camera->pitch = 0.0f;
     camera->yaw = -90.0f;

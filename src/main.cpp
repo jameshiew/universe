@@ -42,6 +42,31 @@ int main(int argc, char *argv[]) {
     double deltaTime, timeOfLastFrame = 0.0f;
     Camera_debug(WINDOW.camera);
 
+    float quadDim = 1e2f;
+    float floor[] = {
+            -quadDim, 0.0f, -quadDim, 8.0f, 8.0f,
+            -quadDim, 0.0f, quadDim, 8.0f, 0.0f,
+            quadDim, 0.0f, quadDim, 0.0f, 8.0f,
+            quadDim, 0.0f, -quadDim, 0.0f, 0.0f,
+    };
+    GLuint a, b;
+    glGenVertexArrays(1, &a);
+    glGenBuffers(1, &b);
+    glBindVertexArray(a);
+    glBindBuffer(GL_ARRAY_BUFFER, b);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
+    glEnableVertexAttribArray(0);
+    // texture attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBufferData(GL_ARRAY_BUFFER, 20 * 5 * sizeof(float), &floor, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
     while (!glfwWindowShouldClose(window)) {
         // INPUT PROCESSING
         double timeValue = glfwGetTime();
@@ -57,7 +82,7 @@ int main(int argc, char *argv[]) {
         // 3D
         {
             glUseProgram(polygonShader);
-            auto projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 100.0f);
+            auto projective = glm::perspective(45.0f, (float) (WINDOW.width / WINDOW.height), 0.1f, 10000.0f);
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "projection"),
                     1, GL_FALSE, glm::value_ptr(projective)
@@ -69,7 +94,7 @@ int main(int argc, char *argv[]) {
                     1, GL_FALSE, glm::value_ptr(view)
             );
 
-            auto model = glm::rotate(glm::mat4(), (float) sin(timeValue), glm::vec3(1.0f, 0.3f, 0.5f));
+            auto model = glm::mat4();
             glUniformMatrix4fv(
                     glGetUniformLocation(polygonShader, "model"),
                     1, GL_FALSE, glm::value_ptr(model)
@@ -81,9 +106,14 @@ int main(int argc, char *argv[]) {
                     1, glm::value_ptr(lightColor)
             );
 
-            glBindVertexArray(p->vao);
+
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
+            // floor
+            glBindVertexArray(a);
+            glDrawArrays(GL_TRIANGLES, 0, 4);
+            // other
+            glBindVertexArray(p->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
         }
 
