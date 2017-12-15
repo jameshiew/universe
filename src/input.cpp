@@ -11,9 +11,6 @@ void processInput(GLFWwindow *window, double deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         speed *= 2.f;
     }
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera->position = camera->position + camera->front * speed;
     }
@@ -34,8 +31,23 @@ void processInput(GLFWwindow *window, double deltaTime) {
     }
 }
 
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    auto *WINDOW = (Window *) glfwGetWindowUserPointer(window);
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        if (WINDOW->paused) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        } else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+        WINDOW->paused = !WINDOW->paused;
+    }
+}
+
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     auto *WINDOW = (Window *) glfwGetWindowUserPointer(window);
+    if (WINDOW->paused) {
+        return;
+    }
     Camera *camera = WINDOW->camera;
     static bool firstTime = true;
     if (firstTime) {

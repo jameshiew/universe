@@ -15,8 +15,10 @@ typedef struct Window {
     int width;
     int height;
     Camera *camera;
+    bool paused;
 } Window;
 
 GLFWwindow *initWindow();
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 #endif //UNIVERSE_WINDOW_H
