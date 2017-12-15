@@ -23,6 +23,12 @@ void processInput(GLFWwindow *window, Camera *camera, double deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera->position = v3_add(camera->position, v3_muls(v3_norm(v3_cross(camera->front, camera->up)), speed));
     }
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        camera->position = v3_add(camera->position, v3_muls(camera->up, speed));
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+        camera->position = v3_sub(camera->position, v3_muls(camera->up, speed));
+    }
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
