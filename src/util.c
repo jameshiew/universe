@@ -26,5 +26,5 @@ char *load_file(const char *path) {
 }
 
 inline float radians(float degrees) {
-    return degrees * (M_PI / 180.0);
+    return degrees * (float) (M_PI / 180.0);
 }
