@@ -35,13 +35,6 @@ int main(int argc, char *argv[]) {
     GLuint polygonShader = load_program("../../shaders/polygon/colored_phong.vert", "../../shaders/polygon/colored_phong.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
-//    std::default_random_engine prng;
-//    std::uniform_real_distribution<float> distribution(-100.f,100.f);
-//    glm::vec3 positions[100];
-//    for (auto &position : positions) {
-//        position = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
-//    }
-
 //    GLuint texture = load_texture("../../textures/container.jpg");
 
     double deltaTime, timeOfLastFrame = 0.0f;
