@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <glad/glad.h>
 #include <memory.h>
+#include <random>
 
 #include "polygon.hpp"
 
@@ -167,10 +168,13 @@ DrawInstruction *test() {
 
     draw->mode = GL_TRIANGLES;
     draw->count = 36;
-    draw->numberOfOffsets = 3;
+    draw->numberOfOffsets = 100;
     draw->offsets = (glm::vec3 *)(malloc(sizeof(glm::vec3) * draw->numberOfOffsets));
-    draw->offsets[0] = glm::vec3(1.0f, 1.0f, 1.0f);
-    draw->offsets[1] = glm::vec3(1.0f, 5.0f, 1.0f);
-    draw->offsets[2] = glm::vec3(1.0f, 10.0f, 3.0f);
+
+    std::default_random_engine prng;
+    std::uniform_real_distribution<float> distribution(-100.f,100.f);
+    for (int i = 0; i < draw->numberOfOffsets; i++) {
+        draw->offsets[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
+    }
     return draw;
 }
