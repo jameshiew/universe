@@ -6,6 +6,8 @@
 #define UNIVERSE_POLYGON_H
 
 #include <glm/glm.hpp>
+#include "render.hpp"
+
 typedef enum VERTEX_TYPE {
     VERTEX_TYPE_POINT,
     VERTEX_TYPE_COLORED,
@@ -29,5 +31,5 @@ Polygon *Rect_new(VERTEX_TYPE vertexType, glm::vec3 *corner);
 Polygon *Cube_new(VERTEX_TYPE vertexType);
 void Polygon_free(Polygon *polygon);
 
-
+DrawInstruction *test();
 #endif //UNIVERSE_POLYGON_H

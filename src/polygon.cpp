@@ -100,3 +100,25 @@ void Polygon_free(Polygon *polygon) {
     free(polygon);
     // TODO: free on GPU as well!
 }
+
+DrawInstruction *test() {
+    auto draw = (DrawInstruction *)malloc(sizeof(DrawInstruction));
+    glGenVertexArrays(1, &(draw->vao));
+    glBindVertexArray(draw->vao);
+    glGenBuffers(1, &(draw->vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, draw->vbo);
+//    glGenBuffers(1, &(draw->ebo));
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, draw->ebo);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void *) 0);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    glBufferData(GL_ARRAY_BUFFER, v, p->vertices, GL_STATIC_DRAW);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, t, p->indices, GL_STATIC_DRAW);
+}

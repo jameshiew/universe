@@ -9,6 +9,44 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "font.hpp"
 #include "config.hpp"
+#include "render.hpp"
+
+void render(GLuint polygonShader, DrawInstruction *draw, float width, float height) {
+    glUseProgram(polygonShader);
+    auto projective = glm::perspective(70.0f, width / height, 0.1f, 1000.0f);
+    glUniformMatrix4fv(
+            glGetUniformLocation(polygonShader, "projection"),
+            1, GL_FALSE, glm::value_ptr(projective)
+    );
+
+    auto view = glm::lookAt(A.camera->position, A.camera->position + A.camera->front, A.camera->up);
+    glUniformMatrix4fv(
+            glGetUniformLocation(polygonShader, "view"),
+            1, GL_FALSE, glm::value_ptr(view)
+    );
+
+    auto color = glm::vec3(0.4f, 0.3f, 1.0f);
+    glUniform3fv(
+            glGetUniformLocation(polygonShader, "color"),
+            1, glm::value_ptr(color)
+    );
+
+    auto lightPosition = A.camera->position;
+    glUniform3fv(
+            glGetUniformLocation(polygonShader, "lightPosition"),
+            1, glm::value_ptr(lightPosition)
+    );
+
+    glBindVertexArray(draw->vao);
+    for (int i = 0; i < draw->numberOfOffsets; i++) {
+        auto model = glm::translate(glm::mat4(), draw->offsets[i]);
+        glUniformMatrix4fv(
+                glGetUniformLocation(polygonShader, "model"),
+                1, GL_FALSE, glm::value_ptr(model)
+        );
+        glDrawArrays(draw->mode, 0, draw->count);
+    }
+}
 
 void renderUI(GLuint textShader, float deltaTime, float width, float height) {
     glUseProgram(textShader);

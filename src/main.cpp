@@ -75,10 +75,16 @@ int main(int argc, char *argv[]) {
                     1, GL_FALSE, glm::value_ptr(view)
             );
 
-            auto lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+            auto color = glm::vec3(0.4f, 0.3f, 1.0f);
             glUniform3fv(
-                    glGetUniformLocation(polygonShader, "lightColor"),
-                    1, glm::value_ptr(lightColor)
+                    glGetUniformLocation(polygonShader, "color"),
+                    1, glm::value_ptr(color)
+            );
+
+            auto lightPosition = A.camera->position;
+            glUniform3fv(
+                    glGetUniformLocation(polygonShader, "lightPosition"),
+                    1, glm::value_ptr(lightPosition)
             );
 
             glActiveTexture(GL_TEXTURE0);
