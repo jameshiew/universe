@@ -105,20 +105,72 @@ DrawInstruction *test() {
     auto draw = (DrawInstruction *)malloc(sizeof(DrawInstruction));
     glGenVertexArrays(1, &(draw->vao));
     glBindVertexArray(draw->vao);
-    glGenBuffers(1, &(draw->vbo));
-    glBindBuffer(GL_ARRAY_BUFFER, draw->vbo);
 //    glGenBuffers(1, &(draw->ebo));
 //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, draw->ebo);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, t, p->indices, GL_STATIC_DRAW);
+
+    draw->vertexSize = 6 * sizeof(float);
+    float vertices[] = {
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
+
+    glGenBuffers(1, &(draw->vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, draw->vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, draw->vertexSize, nullptr);
     glEnableVertexAttribArray(0);
     // normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (void *) (3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, draw->vertexSize, (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-
-    glBufferData(GL_ARRAY_BUFFER, v, p->vertices, GL_STATIC_DRAW);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, t, p->indices, GL_STATIC_DRAW);
+    draw->mode = GL_TRIANGLES;
+    draw->count = 36;
+    draw->numberOfOffsets = 3;
+    draw->offsets = (glm::vec3 *)(malloc(sizeof(glm::vec3) * draw->numberOfOffsets));
+    draw->offsets[0] = glm::vec3(1.0f, 1.0f, 1.0f);
+    draw->offsets[1] = glm::vec3(1.0f, 5.0f, 1.0f);
+    draw->offsets[2] = glm::vec3(1.0f, 10.0f, 3.0f);
+    return draw;
 }

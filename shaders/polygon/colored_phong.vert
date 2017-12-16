@@ -10,7 +10,7 @@ out vec3 WorldPosition;
 out vec3 Normal;
 
 void main() {
-    gl_Position = projection * view * model * vec4(position, 1.0f);
-    WorldPosition = vec3(model * vec4(position, 1.0));
+    WorldPosition = vec3(model * vec4(position, 1.0f));
+    gl_Position = projection * view * vec4(WorldPosition, 1.0f);
     Normal = normal;
 }
