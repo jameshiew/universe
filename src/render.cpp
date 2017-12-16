@@ -13,30 +13,6 @@
 
 void render(GLuint polygonShader, DrawInstruction *draw, float width, float height) {
     glUseProgram(polygonShader);
-    auto projective = glm::perspective(70.0f, width / height, 0.1f, 1000.0f);
-    glUniformMatrix4fv(
-            glGetUniformLocation(polygonShader, "projection"),
-            1, GL_FALSE, glm::value_ptr(projective)
-    );
-
-    auto view = glm::lookAt(A.camera->position, A.camera->position + A.camera->front, A.camera->up);
-    glUniformMatrix4fv(
-            glGetUniformLocation(polygonShader, "view"),
-            1, GL_FALSE, glm::value_ptr(view)
-    );
-
-    auto color = glm::vec3(0.4f, 0.3f, 1.0f);
-    glUniform3fv(
-            glGetUniformLocation(polygonShader, "color"),
-            1, glm::value_ptr(color)
-    );
-
-    auto lightPosition = A.camera->position;
-    glUniform3fv(
-            glGetUniformLocation(polygonShader, "lightPosition"),
-            1, glm::value_ptr(lightPosition)
-    );
-
     glBindVertexArray(draw->vao);
     for (int i = 0; i < draw->numberOfOffsets; i++) {
         auto model = glm::translate(glm::mat4(), draw->offsets[i]);
@@ -48,7 +24,7 @@ void render(GLuint polygonShader, DrawInstruction *draw, float width, float heig
     }
 }
 
-void renderUI(GLuint textShader, float deltaTime, float width, float height) {
+void renderUI(GLuint textShader, Frame* frame, float deltaTime, float width, float height) {
     glUseProgram(textShader);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // we don't render text in wireframe
     auto orthographic = glm::ortho(0.0f, width, 0.0f, height);
@@ -56,6 +32,10 @@ void renderUI(GLuint textShader, float deltaTime, float width, float height) {
             glGetUniformLocation(textShader, "projection"),
             1, GL_FALSE, glm::value_ptr(orthographic)
     );
+
+    std::ostringstream s_frame;
+    s_frame << "NV: " << frame->vertices << " NT: " << frame->triangles << " ND: " << frame->draws;
+    std::string fr = s_frame.str();
 
     std::ostringstream s_frametime;
     s_frametime << "F: " << (unsigned int) (deltaTime * 1000) << "ms";
@@ -72,4 +52,32 @@ void renderUI(GLuint textShader, float deltaTime, float width, float height) {
     renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
     renderText(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
     renderText(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    renderText(textShader, fr, 25.0f, 100.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+}
+
+Frame *Frame_new() {
+    auto frame = (Frame *)malloc(sizeof(Frame));
+    frame->triangles = 0;
+    frame->vertices = 0;
+    frame->draws = 0;
+    return frame;
+}
+
+void Frame_free(Frame *frame) {
+    free(frame);
+}
+
+void Frame_add_draw_instruction(Frame *frame, DrawInstruction *drawInstruction) {
+    switch (drawInstruction->mode) {
+        case GL_TRIANGLES:
+            frame->triangles += drawInstruction->numberOfOffsets * (drawInstruction->count / 3);
+            break;
+//        case GL_TRIANGLE_STRIP:
+//            frame->triangles += drawInstruction->count / 3;
+//            break;
+        default:
+            break;
+    }
+    frame->vertices += drawInstruction->count * drawInstruction->numberOfOffsets;
+    frame->draws += drawInstruction->numberOfOffsets;
 }

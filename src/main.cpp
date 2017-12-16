@@ -50,6 +50,9 @@ int main(int argc, char *argv[]) {
         deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
 
+        // DEBUG COUNTERS
+        auto frame = Frame_new();
+
         // INPUT PROCESSING
         processInput(A.window, deltaTime);
         int width, height;
@@ -60,13 +63,40 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glPolygonMode(GL_FRONT_AND_BACK, A.camera->wireframe ? GL_LINE : GL_FILL);
 
+        glUseProgram(polygonShader);
+        auto projective = glm::perspective(70.0f, (float) width / (float) height, 0.1f, 1000.0f);
+        glUniformMatrix4fv(
+                glGetUniformLocation(polygonShader, "projection"),
+                1, GL_FALSE, glm::value_ptr(projective)
+        );
+
+        auto view = glm::lookAt(A.camera->position, A.camera->position + A.camera->front, A.camera->up);
+        glUniformMatrix4fv(
+                glGetUniformLocation(polygonShader, "view"),
+                1, GL_FALSE, glm::value_ptr(view)
+        );
+
+        auto color = glm::vec3(0.4f, 0.3f, 1.0f);
+        glUniform3fv(
+                glGetUniformLocation(polygonShader, "color"),
+                1, glm::value_ptr(color)
+        );
+
+        auto lightPosition = A.camera->position;
+        glUniform3fv(
+                glGetUniformLocation(polygonShader, "lightPosition"),
+                1, glm::value_ptr(lightPosition)
+        );
         auto drawInstruction = test();
+        Frame_add_draw_instruction(frame, drawInstruction);
+
         render(polygonShader, drawInstruction, (float) width, (float) height);
-        renderUI(textShader, (float) deltaTime, (float) width, (float) height);
+        renderUI(textShader, frame, (float) deltaTime, (float) width, (float) height);
 
         // next!
         glfwSwapBuffers(A.window);
         glfwPollEvents();
+        Frame_free(frame);
     }
     glfwTerminate();
     return 0;
