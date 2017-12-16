@@ -32,18 +32,18 @@ int main(int argc, char *argv[]) {
     glfwSetWindowUserPointer(A.window, &A);
     initFont();
 
-    GLuint polygonShader = load_program("../../shaders/polygon/textured.vert", "../../shaders/polygon/textured.frag");
+    GLuint polygonShader = load_program("../../shaders/polygon/colored_phong.vert", "../../shaders/polygon/colored_phong.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
 
-    Polygon *p = Cube_new(VERTEX_TYPE_COLORED_WITH_NORMAL);
-    std::default_random_engine prng;
-    std::uniform_real_distribution<float> distribution(-100.f,100.f);
+//    std::default_random_engine prng;
+//    std::uniform_real_distribution<float> distribution(-100.f,100.f);
+//    glm::vec3 positions[100];
+//    for (auto &position : positions) {
+//        position = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
+//    }
 
-    GLuint texture = load_texture("../../textures/container.jpg");
-    glm::vec3 positions[100];
-    for (int i = 0; i < 100; i++) {
-        positions[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
-    }
+//    GLuint texture = load_texture("../../textures/container.jpg");
+
     double deltaTime, timeOfLastFrame = 0.0f;
     while (!glfwWindowShouldClose(A.window)) {
         double timeValue = glfwGetTime();
@@ -60,48 +60,9 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glPolygonMode(GL_FRONT_AND_BACK, A.camera->wireframe ? GL_LINE : GL_FILL);
 
-        // 3D
-        {
-            glUseProgram(polygonShader);
-            auto projective = glm::perspective(70.0f, static_cast<GLfloat>(width) / static_cast<GLfloat>(height), 0.1f, 1000.0f);
-            glUniformMatrix4fv(
-                    glGetUniformLocation(polygonShader, "projection"),
-                    1, GL_FALSE, glm::value_ptr(projective)
-            );
-
-            auto view = glm::lookAt(A.camera->position, A.camera->position + A.camera->front, A.camera->up);
-            glUniformMatrix4fv(
-                    glGetUniformLocation(polygonShader, "view"),
-                    1, GL_FALSE, glm::value_ptr(view)
-            );
-
-            auto color = glm::vec3(0.4f, 0.3f, 1.0f);
-            glUniform3fv(
-                    glGetUniformLocation(polygonShader, "color"),
-                    1, glm::value_ptr(color)
-            );
-
-            auto lightPosition = A.camera->position;
-            glUniform3fv(
-                    glGetUniformLocation(polygonShader, "lightPosition"),
-                    1, glm::value_ptr(lightPosition)
-            );
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture);
-            // other
-            glBindVertexArray(p->vao);
-            glm::mat4 model;
-            for (int i = 0; i < 100; i++) {
-                model = glm::translate(glm::mat4(), positions[i]);
-                glUniformMatrix4fv(
-                        glGetUniformLocation(polygonShader, "model"),
-                        1, GL_FALSE, glm::value_ptr(model)
-                );
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
-            }
-        }
-        renderUI(textShader, deltaTime, (float) width, (float) height);
+        auto drawInstruction = test();
+        render(polygonShader, drawInstruction, (float) width, (float) height);
+        renderUI(textShader, (float) deltaTime, (float) width, (float) height);
 
         // next!
         glfwSwapBuffers(A.window);
