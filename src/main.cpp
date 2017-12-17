@@ -28,7 +28,10 @@ int main(int argc, char *argv[]) {
 
     auto polygonShaderProgram = ShaderProgram_load("../../shaders/polygon/colored_phong.vert",
                                               "../../shaders/polygon/colored_phong.frag");
+    polygonShaderProgram->type = SHADER_PROGRAM_COLORED_PHONG;
+
     auto textShaderProgram = ShaderProgram_load("../../shaders/text.vert", "../../shaders/text.frag");
+    textShaderProgram->type = SHADER_PROGRAM_TEXT_SHADER;
 
     float deltaTime, timeOfLastFrame = 0.0f;
     auto world = World_new();
