@@ -4,10 +4,10 @@
 #include "window.hpp"
 #include "space.hpp"
 
-void processInput(GLFWwindow *window, double deltaTime) {
+void processInput(GLFWwindow *window) {
     auto *A = (Application *)glfwGetWindowUserPointer(window);
     Camera *camera = A->camera;
-    float speed = camera->speed * (float) deltaTime;
+    float speed = camera->speed * A->deltaTime;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         speed *= 2.f;
     }

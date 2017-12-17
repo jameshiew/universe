@@ -12,6 +12,7 @@
 typedef struct Application {
     GLFWwindow *window;
     Camera *camera;
+    float deltaTime;
     bool paused;
 } Application;
 extern Application A;

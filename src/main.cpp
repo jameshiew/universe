@@ -40,25 +40,23 @@ int main(int argc, char *argv[]) {
 
 //    GLuint texture = load_texture("../../textures/container.jpg");
 
-    double deltaTime, timeOfLastFrame = 0.0f;
+    float timeOfLastFrame = 0.0f;
     while (!glfwWindowShouldClose(A.window)) {
-        double timeValue = glfwGetTime();
-        deltaTime = timeValue - timeOfLastFrame;
+        auto timeValue = (float) glfwGetTime();
+        A.deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
+        processInput(A.window);
 
         // DEBUG COUNTERS
         auto frame = Frame_new();
-
-        // INPUT PROCESSING
-        processInput(A.window, deltaTime);
-        int width, height;
-        glfwGetFramebufferSize(A.window, &width, &height);
 
         // DRAW
         glClearColor(0.f, 0.f, 0.f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glPolygonMode(GL_FRONT_AND_BACK, A.camera->wireframe ? GL_LINE : GL_FILL);
 
+        int width, height;
+        glfwGetFramebufferSize(A.window, &width, &height);
         glUseProgram(polygonShader);
         auto projective = glm::perspective(70.0f, (float) width / (float) height, 0.1f, 1000.0f);
         glUniformMatrix4fv(
@@ -87,7 +85,7 @@ int main(int argc, char *argv[]) {
         Frame_add_draw_instruction(frame, drawInstruction);
 
         render(polygonShader, drawInstruction, (float) width, (float) height);
-        renderUI(textShader, frame, (float) deltaTime, (float) width, (float) height);
+        renderUI(textShader, frame, A.deltaTime, (float) width, (float) height);
 
         // next!
         glfwSwapBuffers(A.window);
