@@ -26,7 +26,7 @@ GLFWwindow *initWindow() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "Universe", NULL, NULL);
-    if (window == NULL) {
+    if (window == nullptr) {
         fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
         return nullptr;
