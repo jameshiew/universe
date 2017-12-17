@@ -12,6 +12,7 @@ typedef enum SHADER_PROGRAM {
 typedef struct ShaderProgram {
     SHADER_PROGRAM type;
     GLuint id;
+    GLsizei vertexSize;
 } ShaderProgram;
 
 GLuint make_shader(GLenum type, const char *source);

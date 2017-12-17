@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
 
     float timeOfLastFrame = 0.0f;
     auto world = World_new();
+    auto frame = Frame_new();  // use same frame struct each render to save space
     while (!glfwWindowShouldClose(A.window)) {
         auto timeValue = (float) glfwGetTime();
         A.deltaTime = timeValue - timeOfLastFrame;
@@ -43,7 +44,6 @@ int main(int argc, char *argv[]) {
         process_input(A.window);
 
         // DEBUG COUNTERS
-        auto frame = Frame_new();
 
         // DRAW
         glClearColor(0.f, 0.f, 0.f, 1.0f);
@@ -87,8 +87,10 @@ int main(int argc, char *argv[]) {
         // next!
         glfwSwapBuffers(A.window);
         glfwPollEvents();
-        Frame_free(frame);
+        Frame_clear(frame);
     }
+    Frame_free(frame);
+    World_free(world);
     glfwTerminate();
     return 0;
 }
