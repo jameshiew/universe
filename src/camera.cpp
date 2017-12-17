@@ -19,13 +19,14 @@ Camera *Camera_new() {
     camera->right = glm::normalize(glm::cross(UP, camera->behind));
     camera->up = glm::cross(camera->behind, camera->right);
     camera->front = -camera->position;
-    camera->speed = 2.5f;
+
     camera->pitch = 0.0f;
-    camera->yaw = -90.0f;
+    camera->yaw = (float) -M_PI_2;
+    camera->roll = 0.0f;
 
     // TODO: camera controller
-    camera->roll = 0.0f;
-    camera->sensitivity = 0.1f;
+    camera->speed = 2.5f;
+    camera->sensitivity = 0.01f;
 
     camera->lastX = (float) DEFAULT_WINDOW_WIDTH / 2.f;
     camera->lastY = (float) DEFAULT_WINDOW_HEIGHT / 2.f;
