@@ -20,8 +20,8 @@ typedef struct Camera {
     float speed;
     float sensitivity;
 
-    double lastX;
-    double lastY;
+    float lastX;
+    float lastY;
 
     // rendering options
     bool wireframe;
