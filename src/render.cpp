@@ -24,7 +24,7 @@ void render(GLuint polygonShader, DrawInstruction *draw, float width, float heig
     }
 }
 
-void renderUI(GLuint textShader, Frame* frame, float deltaTime, float width, float height) {
+void renderUI(GLuint textShader, Frame* frame, Camera* camera, float deltaTime, float width, float height) {
     glUseProgram(textShader);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // we don't render text in wireframe
     auto orthographic = glm::ortho(0.0f, width, 0.0f, height);
@@ -42,11 +42,11 @@ void renderUI(GLuint textShader, Frame* frame, float deltaTime, float width, flo
     std::string frametime = s_frametime.str();
 
     std::ostringstream s_coords;
-    s_coords << "P: (" << round(A.camera->position.x) << ", " << round(A.camera->position.y) << ", " << round(A.camera->position.z) << ")";
+    s_coords << "P: (" << round(camera->position.x) << ", " << round(camera->position.y) << ", " << round(camera->position.z) << ")";
     std::string coords = s_coords.str();
 
     std::ostringstream s_viewport;
-    s_viewport << "V: " << width << "x" << height << " M: " << A.camera->lastX << ", " << A.camera->lastY;
+    s_viewport << "V: " << width << "x" << height << " M: " << camera->lastX << ", " << camera->lastY;
     std::string viewport = s_viewport.str();
 
     render_text(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
