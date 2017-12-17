@@ -17,7 +17,7 @@ include_directories(vendor/stb/)
 include_directories(vendor/quadtree/src/)
 
 # spdlog
-include_directories(vendor/spdlog/include/)
+include_directories(vendor/spdlog/include/spdlog/)
 # -----------------------------
 
 # --- Final executable ---
