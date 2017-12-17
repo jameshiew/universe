@@ -8,7 +8,6 @@ void processInput(GLFWwindow *window, double deltaTime) {
     auto *WINDOW = (Application *)glfwGetWindowUserPointer(window);
     Camera *camera = WINDOW->camera;
     float speed = camera->speed * (float) deltaTime;
-    static bool wireframe = false;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         speed *= 2.f;
     }
