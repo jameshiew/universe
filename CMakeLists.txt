@@ -2,7 +2,8 @@
 cmake_minimum_required(VERSION 3.9)
 project(universe)
 set(CMAKE_CXX_STANDARD 17)
-add_definitions(-Wall)
+set(CMAKE_BUILD_TYPE Debug)
+add_definitions(-g -Wall)
 # --------------------
 
 # --- Vendored dependencies ---
@@ -18,6 +19,9 @@ include_directories(vendor/quadtree/src/)
 
 # spdlog
 include_directories(vendor/spdlog/include/spdlog/)
+
+# backward-cpp
+add_subdirectory(vendor/backward-cpp/)
 # -----------------------------
 
 # --- Final executable ---
@@ -28,6 +32,8 @@ add_executable(universe
     ${SOURCE_FILES}
     ${GLAD_SOURCE_FILES}
     ${GRAPHENE_SOURCE_FILES}
+    ${BACKWARD_ENABLE}
 )
+add_backward(universe)
 target_link_libraries(universe ${CONAN_LIBS})
 # ------------------------------
