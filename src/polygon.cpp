@@ -4,12 +4,11 @@
 #include <cstddef>
 #include <cstdlib>
 #include <glad/glad.h>
-#include <memory.h>
 #include <random>
 
 #include "polygon.hpp"
 
-DrawInstruction *test() {
+DrawInstruction *test(glm::vec3 origin) {
     auto draw = (DrawInstruction *)malloc(sizeof(DrawInstruction));
     glGenVertexArrays(1, &(draw->vao));
     glBindVertexArray(draw->vao);
@@ -71,6 +70,7 @@ DrawInstruction *test() {
     std::uniform_real_distribution<float> distribution(-100.f,100.f);
     for (int i = 0; i < draw->count; i++) {
         draw->positions[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
+        draw->positions[i] += origin;
     }
     return draw;
 }

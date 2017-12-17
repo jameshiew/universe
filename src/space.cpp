@@ -37,9 +37,17 @@ void World_free(World *world) {
     free(world);
 }
 
-std::list<DrawInstruction *> *World_get_draw_instructions(World *world) {
+std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec3 position) {
     auto drawInstructions = new std::list<DrawInstruction *>();
-    drawInstructions->push_back(test());
+    for (int x = -1; x < 2; x++) {
+        for (int y = -1; y < 2; y++) {
+            for (int z = -1; z < 2; z++) {
+                auto chunk = world->chunks[x][y][z];
+                auto origin = glm::vec3(x * 32.f, y * 32.f, z * 32.f);
+                drawInstructions->push_back(test(origin));
+            }
+        }
+    }
     return drawInstructions;
 }
 

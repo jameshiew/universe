@@ -9,6 +9,6 @@
 #include "render.hpp"
 #include "shaders.hpp"
 
-DrawInstruction *test();
+DrawInstruction *test(glm::vec3 origin);
 
 #endif //UNIVERSE_POLYGON_H

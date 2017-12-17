@@ -31,6 +31,6 @@ typedef struct World {
 
 World *World_new();
 void World_free(World *world);
-std::list<DrawInstruction *> *World_get_draw_instructions(World *world);
+std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec3 position);
 
 #endif //UNIVERSE_SPACE_HPP
