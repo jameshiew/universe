@@ -5,7 +5,6 @@
 
 #include "input.hpp"
 #include "shaders.hpp"
-#include "polygon.hpp"
 #include "window.hpp"
 #include "font.hpp"
 #include "space.hpp"
@@ -20,6 +19,8 @@ int main(int argc, char *argv[]) {
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
     auto glfwLogger = spdlog::stdout_color_mt("glfw");
     auto gladLogger = spdlog::stdout_color_mt("glad");
+    auto worldgenLogger = spdlog::stdout_color_mt("worldgen");
+    spdlog::set_level(spdlog::level::debug);
 
     GLFWwindow *window;
     if ((window = initialise_window()) == nullptr) {
@@ -35,8 +36,6 @@ int main(int argc, char *argv[]) {
 
     auto textShaderProgram = ShaderProgram_load("../../shaders/text.vert", "../../shaders/text.frag");
     textShaderProgram->type = SHADER_PROGRAM_TEXT_SHADER;
-
-    GLuint texture = load_texture("../../textures/container.jpg");
 
     float deltaTime, timeOfLastFrame = 0.0f;
     auto world = World_new();
@@ -73,8 +72,6 @@ int main(int argc, char *argv[]) {
                 glGetUniformLocation(polygonShaderProgram->id, "lightPosition"),
                 1, glm::value_ptr(lightPosition)
         );
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
         auto drawInstructions = World_get_draw_instructions(world, camera->position);
         for (auto &drawInstruction: *drawInstructions) {
             Frame_draw(frame, polygonShaderProgram->id, (DrawInstruction *)drawInstruction);
@@ -88,7 +85,7 @@ int main(int argc, char *argv[]) {
     }
     Frame_free(frame);
     Camera_free(camera);
-    World_free(world);
+//    World_free(world);
     glfwTerminate();
     return 0;
 }
