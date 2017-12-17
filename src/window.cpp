@@ -17,7 +17,7 @@ void error_callback(int error, const char* description) {
 }
 
 GLFWwindow *initWindow() {
-    spdlog::get("glfw")->info("Version info: {0}", glfwGetVersionString());
+    spdlog::get("glfw")->info("Version: {0}", glfwGetVersionString());
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
