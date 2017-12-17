@@ -11,7 +11,7 @@
 
 const size_t VERTEX_SIZE = 5 * sizeof(float);
 
-Polygon *Cube_new(VERTEX_TYPE vertexType) {
+Polygon *abc(VERTEX_TYPE vertexType) {
     auto *p = (Polygon *) malloc(sizeof(Polygon));
     p->vertexType = vertexType;
 
@@ -177,4 +177,15 @@ DrawInstruction *test() {
         draw->offsets[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
     }
     return draw;
+}
+
+Polygon *Cube_new(ShaderProgram *shaderProgram) {
+    auto *p = (Polygon *)malloc(sizeof(Polygon));
+    switch (shaderProgram->type) {
+        case SHADER_PROGRAM_COLORED_PHONG:
+            break;
+        default:
+            break;
+    }
+    return p;
 }

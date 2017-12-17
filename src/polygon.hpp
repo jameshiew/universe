@@ -7,6 +7,11 @@
 
 #include <glm/glm.hpp>
 #include "render.hpp"
+#include "shaders.hpp"
+
+typedef enum POLYGON_TYPE {
+    POLYGON_TYPE_CUBE,
+} POLYGON_TYPE;
 
 typedef enum VERTEX_TYPE {
     VERTEX_TYPE_POINT,
@@ -27,9 +32,7 @@ typedef struct Polygon {
     GLuint ebo;
 } Polygon;
 
-Polygon *Rect_new(VERTEX_TYPE vertexType, glm::vec3 *corner);
-Polygon *Cube_new(VERTEX_TYPE vertexType);
-void Polygon_free(Polygon *polygon);
-
 DrawInstruction *test();
+Polygon *Cube_new(ShaderProgram *shaderProgram);
+
 #endif //UNIVERSE_POLYGON_H
