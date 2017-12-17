@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <stb_image.h>
+#include <spdlog.h>
 
 #include "shaders.hpp"
 #include "util.hpp"
@@ -17,11 +18,11 @@ GLuint make_shader(GLenum type, const char *source) {
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE) {
-        size_t length;
+        GLsizei length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, (GLint *)&length);
-        auto *info = (GLchar *) calloc(length, sizeof(GLchar));
-        glGetShaderInfoLog(shader, (GLsizei) length, nullptr, info);
-        fprintf(stderr, "glCompileShader failed:\n%s\n", info);
+        auto *info = (GLchar *) calloc((size_t) length, sizeof(GLchar));
+        glGetShaderInfoLog(shader, length, nullptr, info);
+        spdlog::get("glad")->error("glCompileShader failed: {}", info);
         free(info);
     }
     return shader;
@@ -52,8 +53,8 @@ ShaderProgram *ShaderProgram_new(GLuint vertexShader, GLuint fragmentShader) {
         size_t length;
         glGetProgramiv(program->id, GL_INFO_LOG_LENGTH, (GLint *)&length);
         auto *info = (GLchar *) calloc(length, sizeof(GLchar));
-        glGetProgramInfoLog(program->id, (GLsizei) length, NULL, info);
-        fprintf(stderr, "glLinkProgram failed: %s\n", info);
+        glGetProgramInfoLog(program->id, (GLsizei) length, nullptr, info);
+        spdlog::get("glad")->error("glLinkProgram failed: {}", info);
         free(info);
     }
     glDetachShader(program->id, vertexShader);
@@ -79,7 +80,7 @@ GLuint load_texture(const char *texturePath) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        fputs("Failed to load texture", stderr);
+        spdlog::get("glad")->error("Failed to load texture from {}", texturePath);
     }
     stbi_image_free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
