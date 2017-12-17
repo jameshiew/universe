@@ -26,7 +26,7 @@ Application A = {
 
 int main(int argc, char *argv[]) {
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
-    auto glfwLogger = spdlog::stdout_color_mt("logger");
+    auto glfwLogger = spdlog::stdout_color_mt("glfw");
     A.window = initWindow();
     if (A.window == nullptr) {
         return -1;
