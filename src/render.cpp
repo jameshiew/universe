@@ -49,10 +49,10 @@ void renderUI(GLuint textShader, Frame* frame, float deltaTime, float width, flo
     s_viewport << "V: " << width << "x" << height << " M: " << A.camera->lastX << ", " << A.camera->lastY;
     std::string viewport = s_viewport.str();
 
-    renderText(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    renderText(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    renderText(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    renderText(textShader, fr, 25.0f, 100.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(textShader, fr, 25.0f, 100.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
 }
 
 Frame *Frame_new() {

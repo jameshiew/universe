@@ -4,7 +4,7 @@
 #include "window.hpp"
 #include "space.hpp"
 
-void processInput(GLFWwindow *window) {
+void process_input(GLFWwindow *window) {
     auto *A = (Application *)glfwGetWindowUserPointer(window);
     Camera *camera = A->camera;
     float speed = camera->speed * A->deltaTime;

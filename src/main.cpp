@@ -26,14 +26,13 @@ Application A = {
 
 int main(int argc, char *argv[]) {
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
-    auto glfwLogger = spdlog::stdout_color_mt("glfw");
-    A.window = initWindow();
+    A.window = initialise_window();
     if (A.window == nullptr) {
         return -1;
     }
     A.camera = Camera_new();
     glfwSetWindowUserPointer(A.window, &A);
-    initFont();
+    initialise_font();
 
     GLuint polygonShader = load_program("../../shaders/polygon/colored_phong.vert", "../../shaders/polygon/colored_phong.frag");
     GLuint textShader = load_program("../../shaders/text.vert", "../../shaders/text.frag");
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]) {
         auto timeValue = (float) glfwGetTime();
         A.deltaTime = timeValue - timeOfLastFrame;
         timeOfLastFrame = timeValue;
-        processInput(A.window);
+        process_input(A.window);
 
         // DEBUG COUNTERS
         auto frame = Frame_new();
