@@ -19,14 +19,14 @@ extern const glm::vec3 SOUTH;
 extern const glm::mat4 IDENTITY;
 
 typedef struct Chunk {
-    bool *blocks[32][32][32];
+    char blocks[32][32][32];
 } Chunk;
 
 Chunk *Chunk_new();
 void Chunk_free(Chunk *chunk);
 
 typedef struct World {
-    void *generate(World*, int, int, int);
+    void generate(World*, int, int, int);
     Chunk *chunks[16][16][16];
 } World;
 

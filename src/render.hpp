@@ -6,21 +6,19 @@
 #define UNIVERSE_RENDER_H
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <list>
 
 #include "camera.hpp"
 
 typedef struct DrawInstruction {
     GLenum mode;
-    glm::vec3 *positions;
-    size_t count;
+    std::list<glm::vec3> *positions;
+    GLuint texture;
 
     GLuint vao;
     GLuint vbo;
     GLsizei vertexSize;
     GLsizei vertexCount;
-    bool useIndices;
-    GLuint ebo;
-    GLsizei indexCount;
 } DrawInstruction;
 
 // Represents debug information about a frame drawn
@@ -34,6 +32,8 @@ Frame *Frame_new();
 void Frame_free(Frame* frame);
 void Frame_clear(Frame* frame);
 void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction);
+
+DrawInstruction *DrawInstruction_cube();
 
 void renderUI(GLuint shaderProgram, Frame *frame, Camera *camera, float deltaTime, float width, float height);
 #endif //UNIVERSE_RENDER_H

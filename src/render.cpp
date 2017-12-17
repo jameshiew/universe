@@ -11,6 +11,7 @@
 #include "config.hpp"
 #include "render.hpp"
 #include "space.hpp"
+#include "shaders.hpp"
 
 void renderUI(GLuint shaderProgram, Frame* frame, Camera* camera, float deltaTime, float width, float height) {
     glUseProgram(shaderProgram);
@@ -54,21 +55,23 @@ void Frame_free(Frame *frame) {
 void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction) {
     switch (drawInstruction->mode) {
         case GL_TRIANGLES:
-            frame->triangles += drawInstruction->count * (drawInstruction->vertexCount / 3);
+            frame->triangles += drawInstruction->positions->size() * (drawInstruction->vertexCount / 3);
             break;
         case GL_TRIANGLE_STRIP:
-            frame->triangles += drawInstruction->count * (drawInstruction->vertexCount - 2);
+            frame->triangles += drawInstruction->positions->size() * (drawInstruction->vertexCount - 2);
             break;
         default:
             break;
     }
-    frame->vertices += drawInstruction->count * drawInstruction->vertexCount;
-    frame->draws += drawInstruction->count;
+    frame->vertices += drawInstruction->positions->size() * drawInstruction->vertexCount;
+    frame->draws += drawInstruction->positions->size();
 
     glUseProgram(shaderProgram);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, drawInstruction->texture);
     glBindVertexArray(drawInstruction->vao);
-    for (int i = 0; i < drawInstruction->count; i++) {
-        auto model = glm::translate(IDENTITY, drawInstruction->positions[i]);
+    for (auto &position: *drawInstruction->positions) {
+        auto model = glm::translate(IDENTITY, position);
         glUniformMatrix4fv(
             glGetUniformLocation(shaderProgram, "model"),
             1, GL_FALSE, glm::value_ptr(model)
@@ -81,4 +84,68 @@ void Frame_clear(Frame *frame) {
     frame->draws = 0;
     frame->vertices = 0;
     frame->triangles = 0;
+}
+
+const float CUBE_STRIP_VERTICES[] = {
+        // south          // normal         // texture
+        0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        // east
+        1.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        // north
+        1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        // west
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        // down
+        0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        // up
+        0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+};
+
+GLuint cubeTexture = 0;
+
+DrawInstruction *DrawInstruction_cube() {
+    auto draw = (DrawInstruction *)malloc(sizeof(DrawInstruction));
+    glGenVertexArrays(1, &(draw->vao));
+    glBindVertexArray(draw->vao);
+    if (!cubeTexture) {
+        cubeTexture = load_texture("../../textures/container.jpg");
+    }
+
+    draw->vertexSize = 8 * sizeof(float);
+    draw->vertexCount = 24;
+    draw->mode = GL_TRIANGLE_STRIP;
+    draw->texture = cubeTexture;
+
+    glGenBuffers(1, &(draw->vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, draw->vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(CUBE_STRIP_VERTICES), CUBE_STRIP_VERTICES, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, draw->vertexSize, nullptr);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, draw->vertexSize, (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // uv attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, draw->vertexSize, (void *) (6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+    return draw;
 }
