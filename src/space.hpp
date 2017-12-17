@@ -8,14 +8,14 @@
 #include <list>
 #include <glm/detail/type_mat.hpp>
 
-extern glm::vec3 UP;
-extern glm::vec3 DOWN;
-extern glm::vec3 NORTH;
-extern glm::vec3 WEST;
-extern glm::vec3 EAST;
-extern glm::vec3 SOUTH;
+extern const glm::vec3 UP;
+extern const glm::vec3 DOWN;
+extern const glm::vec3 NORTH;
+extern const glm::vec3 WEST;
+extern const glm::vec3 EAST;
+extern const glm::vec3 SOUTH;
 
-extern glm::mat4 IDENTITY;
+extern const glm::mat4 IDENTITY;
 
 typedef struct Chunk {
     char *blocks[32][32][32];
