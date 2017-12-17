@@ -12,6 +12,8 @@ glm::vec3 WEST = glm::vec3(0.0f, 0.0f, 1.0f);
 glm::vec3 EAST = -WEST;
 glm::vec3 SOUTH = -NORTH;
 
+glm::mat4 IDENTITY = glm::mat4();
+
 Chunk *Chunk_new() {
     return (Chunk *)malloc(sizeof(Chunk));
 }

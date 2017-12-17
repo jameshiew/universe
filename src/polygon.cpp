@@ -11,6 +11,39 @@
 
 const size_t VERTEX_SIZE = 5 * sizeof(float);
 
+const float CUBE_VERTICES[] = {
+        // south
+        0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        // east
+        1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 0.0f,
+        // north
+        1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        // west
+        0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 1.0f,
+        // down
+        0.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f,
+        // up
+        0.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+};
+
 Polygon *abc(VERTEX_TYPE vertexType) {
     auto *p = (Polygon *) malloc(sizeof(Polygon));
     p->vertexType = vertexType;

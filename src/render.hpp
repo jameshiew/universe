@@ -32,6 +32,7 @@ typedef struct Frame {
 
 Frame *Frame_new();
 void Frame_free(Frame* frame);
+void Frame_clear(Frame* frame);
 void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction);
 
 void renderUI(GLuint shaderProgram, Frame *frame, Camera *camera, float deltaTime, float width, float height);

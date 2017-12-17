@@ -10,6 +10,7 @@
 #include "font.hpp"
 #include "config.hpp"
 #include "render.hpp"
+#include "space.hpp"
 
 void renderUI(GLuint shaderProgram, Frame* frame, Camera* camera, float deltaTime, float width, float height) {
     glUseProgram(shaderProgram);
@@ -67,15 +68,17 @@ void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruc
     glUseProgram(shaderProgram);
     glBindVertexArray(drawInstruction->vao);
     for (int i = 0; i < drawInstruction->count; i++) {
-        auto model = glm::translate(glm::mat4(), drawInstruction->positions[i]);
+        auto model = glm::translate(IDENTITY, drawInstruction->positions[i]);
         glUniformMatrix4fv(
             glGetUniformLocation(shaderProgram, "model"),
             1, GL_FALSE, glm::value_ptr(model)
         );
-//        if (drawInstruction->useIndices) {
-//            glDrawElements(drawInstruction->mode, )
-//        } else {
-            glDrawArrays(drawInstruction->mode, 0, drawInstruction->vertexCount);
-//        }
+        glDrawArrays(drawInstruction->mode, 0, drawInstruction->vertexCount);
     }
+}
+
+void Frame_clear(Frame *frame) {
+    frame->draws = 0;
+    frame->vertices = 0;
+    frame->triangles = 0;
 }
