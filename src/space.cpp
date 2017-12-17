@@ -37,9 +37,9 @@ void World_free(World *world) {
     free(world);
 }
 
-std::list<void *> World_get_draw_instructions(World *world) {
-    std::list<void *> drawInstructions;
-    drawInstructions.push_back((void *) test());
+std::list<DrawInstruction *> *World_get_draw_instructions(World *world) {
+    auto drawInstructions = new std::list<DrawInstruction *>();
+    drawInstructions->push_back(test());
     return drawInstructions;
 }
 

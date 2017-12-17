@@ -7,6 +7,7 @@
 #include <glm/vec3.hpp>
 #include <list>
 #include <glm/detail/type_mat.hpp>
+#include "render.hpp"
 
 extern const glm::vec3 UP;
 extern const glm::vec3 DOWN;
@@ -30,6 +31,6 @@ typedef struct World {
 
 World *World_new();
 void World_free(World *world);
-std::list<void *> World_get_draw_instructions(World *world);
+std::list<DrawInstruction *> *World_get_draw_instructions(World *world);
 
 #endif //UNIVERSE_SPACE_HPP
