@@ -16,6 +16,7 @@ typedef struct Application {
 } Application;
 extern Application A;
 
+#define APPLICATION_NAME "Universe"
 #define DEFAULT_WINDOW_WIDTH 1024
 #define DEFAULT_WINDOW_HEIGHT 768
 

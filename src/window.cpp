@@ -6,9 +6,14 @@
 #include <cstdio>
 #include "window.hpp"
 #include "input.hpp"
+#include "spdlog.h"
 
-void resize_viewport(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void error_callback(int error, const char* description) {
+    spdlog::get("glfw")->error("[Errno %d] %s", error, description);
 }
 
 GLFWwindow *initWindow() {
@@ -25,7 +30,8 @@ GLFWwindow *initWindow() {
         return nullptr;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, resize_viewport);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetErrorCallback(error_callback);
 
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetKeyCallback(window, key_callback);
