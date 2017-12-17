@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         auto drawInstructions = World_get_draw_instructions(world);
-        for (auto &drawInstruction: drawInstructions) {
+        for (auto &drawInstruction: *drawInstructions) {
             Frame_draw(frame, polygonShaderProgram->id, (DrawInstruction *)drawInstruction);
         }
         renderUI(textShaderProgram->id, frame, camera, deltaTime, widthf, heightf);
