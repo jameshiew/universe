@@ -11,25 +11,12 @@
 #include "config.hpp"
 #include "render.hpp"
 
-void render(GLuint polygonShader, DrawInstruction *draw, float width, float height) {
-    glUseProgram(polygonShader);
-    glBindVertexArray(draw->vao);
-    for (int i = 0; i < draw->numberOfOffsets; i++) {
-        auto model = glm::translate(glm::mat4(), draw->offsets[i]);
-        glUniformMatrix4fv(
-                glGetUniformLocation(polygonShader, "model"),
-                1, GL_FALSE, glm::value_ptr(model)
-        );
-        glDrawArrays(draw->mode, 0, draw->count);
-    }
-}
-
-void renderUI(GLuint textShader, Frame* frame, Camera* camera, float deltaTime, float width, float height) {
-    glUseProgram(textShader);
+void renderUI(GLuint shaderProgram, Frame* frame, Camera* camera, float deltaTime, float width, float height) {
+    glUseProgram(shaderProgram);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // we don't render text in wireframe
     auto orthographic = glm::ortho(0.0f, width, 0.0f, height);
     glUniformMatrix4fv(
-            glGetUniformLocation(textShader, "projection"),
+            glGetUniformLocation(shaderProgram, "projection"),
             1, GL_FALSE, glm::value_ptr(orthographic)
     );
 
@@ -49,35 +36,42 @@ void renderUI(GLuint textShader, Frame* frame, Camera* camera, float deltaTime, 
     s_viewport << "V: " << width << "x" << height << " M: " << camera->lastX << ", " << camera->lastY;
     std::string viewport = s_viewport.str();
 
-    render_text(textShader, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    render_text(textShader, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    render_text(textShader, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
-    render_text(textShader, fr, 25.0f, 100.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(shaderProgram, frametime, 25.0f, 25.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(shaderProgram, coords, 25.0f, 50.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(shaderProgram, viewport, 25.0f, 75.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
+    render_text(shaderProgram, fr, 25.0f, 100.0f, .5f, glm::vec3(1.f, 1.f, 1.f));
 }
 
 Frame *Frame_new() {
-    auto frame = (Frame *)malloc(sizeof(Frame));
-    frame->triangles = 0;
-    frame->vertices = 0;
-    frame->draws = 0;
-    return frame;
+    return (Frame *)calloc(1, sizeof(Frame));
 }
 
 void Frame_free(Frame *frame) {
     free(frame);
 }
 
-void Frame_add_draw_instruction(Frame *frame, DrawInstruction *drawInstruction) {
+void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction) {
     switch (drawInstruction->mode) {
         case GL_TRIANGLES:
             frame->triangles += drawInstruction->numberOfOffsets * (drawInstruction->count / 3);
             break;
-//        case GL_TRIANGLE_STRIP:
-//            frame->triangles += drawInstruction->count / 3;
-//            break;
+        case GL_TRIANGLE_STRIP:
+            frame->triangles += drawInstruction->numberOfOffsets * (drawInstruction->count - 2);
+            break;
         default:
             break;
     }
-    frame->vertices += drawInstruction->count * drawInstruction->numberOfOffsets;
+    frame->vertices += drawInstruction->numberOfOffsets * drawInstruction->count;
     frame->draws += drawInstruction->numberOfOffsets;
+
+    glUseProgram(shaderProgram);
+    glBindVertexArray(drawInstruction->vao);
+    for (int i = 0; i < drawInstruction->numberOfOffsets; i++) {
+        auto model = glm::translate(glm::mat4(), drawInstruction->offsets[i]);
+        glUniformMatrix4fv(
+            glGetUniformLocation(shaderProgram, "model"),
+            1, GL_FALSE, glm::value_ptr(model)
+        );
+        glDrawArrays(drawInstruction->mode, 0, drawInstruction->count);
+    }
 }
