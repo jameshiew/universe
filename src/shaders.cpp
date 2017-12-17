@@ -2,7 +2,6 @@
 // Created by James Hiew on 09/12/2017.
 //
 
-#include "render.hpp"
 #include <glad/glad.h>
 #include <cstdio>
 #include <cstdlib>
@@ -13,15 +12,15 @@
 
 GLuint make_shader(GLenum type, const char *source) {
     GLuint shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, NULL);
+    glShaderSource(shader, 1, &source, nullptr);
     glCompileShader(shader);
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE) {
         size_t length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, (GLint *)&length);
-        GLchar *info = (GLchar *) calloc(length, sizeof(GLchar));
-        glGetShaderInfoLog(shader, (GLsizei) length, NULL, info);
+        auto *info = (GLchar *) calloc(length, sizeof(GLchar));
+        glGetShaderInfoLog(shader, (GLsizei) length, nullptr, info);
         fprintf(stderr, "glCompileShader failed:\n%s\n", info);
         free(info);
     }
@@ -43,7 +42,6 @@ ShaderProgram *ShaderProgram_load(const char *vertexShaderPath, const char *frag
 
 ShaderProgram *ShaderProgram_new(GLuint vertexShader, GLuint fragmentShader) {
     auto program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
-    program->type = SHADER_PROGRAM_COLORED_PHONG;
     program->id = glCreateProgram();
     glAttachShader(program->id, vertexShader);
     glAttachShader(program->id, fragmentShader);
@@ -53,7 +51,7 @@ ShaderProgram *ShaderProgram_new(GLuint vertexShader, GLuint fragmentShader) {
     if (status == GL_FALSE) {
         size_t length;
         glGetProgramiv(program->id, GL_INFO_LOG_LENGTH, (GLint *)&length);
-        GLchar *info = (GLchar *) calloc(length, sizeof(GLchar));
+        auto *info = (GLchar *) calloc(length, sizeof(GLchar));
         glGetProgramInfoLog(program->id, (GLsizei) length, NULL, info);
         fprintf(stderr, "glLinkProgram failed: %s\n", info);
         free(info);

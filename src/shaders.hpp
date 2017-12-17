@@ -7,6 +7,7 @@
 
 typedef enum SHADER_PROGRAM {
     SHADER_PROGRAM_COLORED_PHONG,
+    SHADER_PROGRAM_TEXT_SHADER
 } SHADER_PROGRAM;
 
 typedef struct ShaderProgram {
