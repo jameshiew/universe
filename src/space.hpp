@@ -4,7 +4,6 @@
 
 #ifndef UNIVERSE_SPACE_HPP
 #define UNIVERSE_SPACE_HPP
-
 #include <glm/vec3.hpp>
 
 extern glm::vec3 UP;
@@ -27,5 +26,6 @@ typedef struct World {
 
 World *World_new();
 void World_free(World *world);
+void *World_get_draw_instructions(World *world);
 
 #endif //UNIVERSE_SPACE_HPP

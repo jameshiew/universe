@@ -34,3 +34,7 @@ void World_free(World *world) {
     free(world);
 }
 
+void *World_get_draw_instructions(World *world) {
+    return nullptr;
+}
+

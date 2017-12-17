@@ -35,30 +35,31 @@ GLuint load_shader(GLenum type, const char *path) {
     return result;
 }
 
-GLuint load_program(const char *vertexShaderPath, const char *fragmentShaderPath) {
+ShaderProgram *ShaderProgram_load(const char *vertexShaderPath, const char *fragmentShaderPath) {
     GLuint vertexShader = load_shader(GL_VERTEX_SHADER, vertexShaderPath);
     GLuint fragmentShader = load_shader(GL_FRAGMENT_SHADER, fragmentShaderPath);
-    GLuint program = make_program(vertexShader, fragmentShader);
-    return program;
+    return ShaderProgram_new(vertexShader, fragmentShader);
 }
 
-GLuint make_program(GLuint vertexShader, GLuint fragmentShader) {
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
+ShaderProgram *ShaderProgram_new(GLuint vertexShader, GLuint fragmentShader) {
+    auto program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
+    program->type = SHADER_PROGRAM_COLORED_PHONG;
+    program->id = glCreateProgram();
+    glAttachShader(program->id, vertexShader);
+    glAttachShader(program->id, fragmentShader);
+    glLinkProgram(program->id);
     GLint status;
-    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    glGetProgramiv(program->id, GL_LINK_STATUS, &status);
     if (status == GL_FALSE) {
         size_t length;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, (GLint *)&length);
+        glGetProgramiv(program->id, GL_INFO_LOG_LENGTH, (GLint *)&length);
         GLchar *info = (GLchar *) calloc(length, sizeof(GLchar));
-        glGetProgramInfoLog(program, (GLsizei) length, NULL, info);
+        glGetProgramInfoLog(program->id, (GLsizei) length, NULL, info);
         fprintf(stderr, "glLinkProgram failed: %s\n", info);
         free(info);
     }
-    glDetachShader(program, vertexShader);
-    glDetachShader(program, fragmentShader);
+    glDetachShader(program->id, vertexShader);
+    glDetachShader(program->id, fragmentShader);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     return program;
