@@ -122,7 +122,7 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, draw->vertexSize, (void *) (6 * sizeof(float)));
                 glEnableVertexAttribArray(2);
 
-                draw->count = 32;
+                draw->count = 1024;
                 draw->positions = (glm::vec3 *)(malloc(sizeof(glm::vec3) * draw->count));
                 std::default_random_engine prng;
                 std::uniform_real_distribution<float> distribution(-100.f,100.f);
