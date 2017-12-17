@@ -24,23 +24,25 @@ void Chunk_free(Chunk *chunk) {
     free(chunk);
 }
 
-void World::generate(World *world, int x, int y, int z) {
-    world->chunks[x][y][z] = Chunk_new();
+void World::generate(World *world, glm::ivec3 coords) {
+    auto chunk = Chunk_new();
+    world->chunks->[coords] = chunk;
     for (int _x = 0; _x < 32; _x++) {
         for (int _y = 0; _y < 32; _y++) {
-            world->chunks[x][y][z]->blocks[_x][_y][0] = 'a';
+            chunk->blocks[_x][_y][0] = 'a';
         }
     }
-    spdlog::get("worldgen")->debug("Generated chunk: {0:d}, {1:d}, {2:d}", x, y, z);
+    spdlog::get("worldgen")->debug("Generated chunk: {0:d}, {1:d}, {2:d}", coords.x, coords.y, coords.z);
 }
 
 World *World_new() {
     auto world = (World *)malloc(sizeof(World));
+    world->chunks = new std::map<glm::ivec3, Chunk>();
     // pregenerate origin
     for (int x = -1; x < 2; x++) {
         for (int y = -1; y < 2; y++) {
             for (int z = -1; z < 2; z++) {
-                world->generate(world, x, y, z);
+                world->generate(world, glm::ivec3(x, y, z));
             }
         }
     }
@@ -48,15 +50,6 @@ World *World_new() {
 }
 
 void World_free(World *world) {
-    for (int x = 0; x < 16; x++) {
-        for (int y = 0; y < 16; y++) {
-            for (int z = 0; z < 16; z++) {
-                if (world->chunks[x][y][z] != 0) {
-                    Chunk_free(world->chunks[x][y][z]);
-                }
-            }
-        }
-    }
     free(world->chunks);
     free(world);
 }
@@ -70,13 +63,15 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 auto draw = DrawInstruction_cube();
                 draw->positions = new std::list<glm::vec3>();
 
+                auto chunk = world->chunks->[glm::ivec3(x, y, z)];
                 for (int _x = 0; _x < 32; _x++) {
                     for (int _y = 0; _y < 32; _y++) {
                         for (int _z = 0; _z < 32; _z++) {
-                            if (world->chunks[x][y][z]->blocks[_x][_y][_z] == 'a') {
-                                auto position = glm::vec3((float) x, (float) y, (float) z);
-                                position += origin;
-                                draw->positions->push_back(position);
+                            auto coords = glm::ivec3(_x, _y, _z);
+                            if (chunk->blocks[_x][_y][_z] == 'a') {
+                                auto nposition = glm::vec3((float) x, (float) y, (float) z);
+                                nposition += origin;
+                                draw->positions->push_back(nposition);
                             }
                         }
                     }
