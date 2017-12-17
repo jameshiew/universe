@@ -5,8 +5,8 @@
 #include "space.hpp"
 
 void processInput(GLFWwindow *window, double deltaTime) {
-    auto *WINDOW = (Application *)glfwGetWindowUserPointer(window);
-    Camera *camera = WINDOW->camera;
+    auto *A = (Application *)glfwGetWindowUserPointer(window);
+    Camera *camera = A->camera;
     float speed = camera->speed * (float) deltaTime;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         speed *= 2.f;
@@ -32,26 +32,26 @@ void processInput(GLFWwindow *window, double deltaTime) {
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    auto *WINDOW = (Application *)glfwGetWindowUserPointer(window);
+    auto *A = (Application *)glfwGetWindowUserPointer(window);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
         glfwSetCursorPos(window, (float) width / 2.f, (float) height / 2.f);
-        if (WINDOW->paused) {
+        if (A->paused) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
-        WINDOW->paused = !WINDOW->paused;
+        A->paused = !A->paused;
     } else if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        WINDOW->camera->wireframe = !WINDOW->camera->wireframe;
+        A->camera->wireframe = !A->camera->wireframe;
     }
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
-    auto *WINDOW = (Application *)glfwGetWindowUserPointer(window);
-    Camera *camera = WINDOW->camera;
-    if (WINDOW->paused) {
+    auto *A = (Application *)glfwGetWindowUserPointer(window);
+    Camera *camera = A->camera;
+    if (A->paused) {
         return;
     }
 
