@@ -21,7 +21,7 @@ typedef struct Character {
 
 std::map<GLchar, Character> Characters;
 
-void initFont() {
+void initialise_font() {
     if (FT_Init_FreeType(&library)) {
         fprintf(stderr, "Could not init freetype library\n");
     }
@@ -80,7 +80,7 @@ void initFont() {
     glBindVertexArray(0);
 }
 
-void renderText(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+void render_text(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     // Activate corresponding render state
     glUseProgram(shaderProgram);
     glUniform3f(glGetUniformLocation(shaderProgram, "textColor"), color.x, color.y, color.z);
