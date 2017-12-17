@@ -5,10 +5,4 @@
 #ifndef UNIVERSE_POLYGON_H
 #define UNIVERSE_POLYGON_H
 
-#include <glm/glm.hpp>
-#include "render.hpp"
-#include "shaders.hpp"
-
-DrawInstruction *test(glm::vec3 origin);
-
 #endif //UNIVERSE_POLYGON_H
