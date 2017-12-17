@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         Frame_add_draw_instruction(frame, drawInstruction);
 
         render(polygonShader, drawInstruction, widthf, heightf);
-        renderUI(textShader, frame, A.deltaTime, widthf, heightf);
+        renderUI(textShader, frame, A.camera, A.deltaTime, widthf, heightf);
 
         // next!
         glfwSwapBuffers(A.window);

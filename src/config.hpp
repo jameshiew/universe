@@ -15,7 +15,6 @@ typedef struct Application {
     float deltaTime;
     bool paused;
 } Application;
-extern Application A;
 
 #define APPLICATION_NAME "Universe"
 #define DEFAULT_WINDOW_WIDTH 1024
