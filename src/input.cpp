@@ -48,17 +48,26 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
+bool firstMouse = true;
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     auto *A = (Application *)glfwGetWindowUserPointer(window);
-    Camera *camera = A->camera;
     if (A->paused) {
         return;
     }
 
-    float xoffset = xpos - camera->lastX;
-    float yoffset = camera->lastY - ypos; // reversed since y-coordinates range from bottom to top
-    camera->lastX = xpos;
-    camera->lastY = ypos;
+    Camera *camera = A->camera;
+    float xposf = (float) xpos;
+    float yposf = (float) ypos;
+    if (firstMouse) {
+        camera->lastX = xposf;
+        camera->lastY = yposf;
+        firstMouse = false;
+    }
+
+    float xoffset = xposf - camera->lastX;
+    float yoffset = camera->lastY - yposf; // reversed since y-coordinates range from bottom to top
+    camera->lastX = xposf;
+    camera->lastY = yposf;
 
     xoffset *= camera->sensitivity;
     yoffset *= camera->sensitivity;
