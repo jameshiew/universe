@@ -8,6 +8,7 @@
 #include <list>
 #include <glm/detail/type_mat.hpp>
 #include "render.hpp"
+#include <map>
 
 extern const glm::vec3 UP;
 extern const glm::vec3 DOWN;
@@ -26,8 +27,8 @@ Chunk *Chunk_new();
 void Chunk_free(Chunk *chunk);
 
 typedef struct World {
-    void generate(World*, int, int, int);
-    Chunk *chunks[16][16][16];
+    void generate(World*, glm::ivec3);
+    std::map<glm::ivec3, Chunk> *chunks;
 } World;
 
 World *World_new();
