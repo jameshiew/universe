@@ -80,11 +80,11 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
         camera->pitch = (float) -M_PI_2;
     }
 
-    glm::vec3 front = {0.0f, 0.0f, 0.0f};
-    front.x = cosf(camera->pitch) * cosf(camera->yaw);
-    front.y = sinf(camera->pitch);
-    front.z = cosf(camera->pitch) * sinf(camera->yaw);
-    camera->front = glm::normalize(front);
+    camera->front = glm::vec3(
+            cosf(camera->pitch) * cosf(camera->yaw),
+            sinf(camera->pitch),
+            cosf(camera->pitch) * sinf(camera->yaw)
+    );
     camera->right = glm::normalize(glm::cross(camera->front, UP));
     camera->up = glm::normalize(glm::cross(camera->right, camera->front));
 }
