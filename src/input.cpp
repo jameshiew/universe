@@ -56,8 +56,8 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     }
 
     Camera *camera = A->camera;
-    float xposf = (float) xpos;
-    float yposf = (float) ypos;
+    auto xposf = (float) xpos;
+    auto yposf = (float) ypos;
     if (firstMouse) {
         camera->lastX = xposf;
         camera->lastY = yposf;
