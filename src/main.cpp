@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
         );
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        auto drawInstructions = World_get_draw_instructions(world);
+        auto drawInstructions = World_get_draw_instructions(world, camera->position);
         for (auto &drawInstruction: *drawInstructions) {
             Frame_draw(frame, polygonShaderProgram->id, (DrawInstruction *)drawInstruction);
         }
