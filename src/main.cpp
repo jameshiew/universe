@@ -56,8 +56,9 @@ int main(int argc, char *argv[]) {
 
         int width, height;
         glfwGetFramebufferSize(A.window, &width, &height);
+        auto widthf = (float) width, heightf = (float) height;
         glUseProgram(polygonShader);
-        auto projective = glm::perspective(70.0f, (float) width / (float) height, 0.1f, 1000.0f);
+        auto projective = glm::perspective(70.0f, widthf / heightf, 0.1f, 1000.0f);
         glUniformMatrix4fv(
                 glGetUniformLocation(polygonShader, "projection"),
                 1, GL_FALSE, glm::value_ptr(projective)
@@ -83,8 +84,8 @@ int main(int argc, char *argv[]) {
         auto drawInstruction = test();
         Frame_add_draw_instruction(frame, drawInstruction);
 
-        render(polygonShader, drawInstruction, (float) width, (float) height);
-        renderUI(textShader, frame, A.deltaTime, (float) width, (float) height);
+        render(polygonShader, drawInstruction, widthf, heightf);
+        renderUI(textShader, frame, A.deltaTime, widthf, heightf);
 
         // next!
         glfwSwapBuffers(A.window);
