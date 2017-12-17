@@ -11,7 +11,7 @@ vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 out vec4 Color;
 
 void main(){
-    float ambientStrength = 0.1f;
+    float ambientStrength = 0.7f;
     vec3 ambientLight = ambientStrength * lightColor;
 
     vec3 diffuseLightDirection = normalize(lightPosition - WorldPosition);
@@ -19,5 +19,5 @@ void main(){
     float diffuseStrength = max(dot(normalize(Normal), diffuseLightDirection), 0.0);
     vec3 diffuseLight = diffuseStrength * lightColor;
 
-    Color = vec4(ambientLight + diffuseLight, 1.0f) + texture(u_texture, TextureCoordinates);
+    Color = vec4(ambientLight + diffuseLight, 1.0f) * texture(u_texture, TextureCoordinates);
 }
