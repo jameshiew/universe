@@ -30,7 +30,7 @@ typedef struct Frame {
 
 Frame *Frame_new();
 void Frame_free(Frame* frame);
-void Frame_add_draw_instruction(Frame* frame, DrawInstruction* drawInstruction);
-void render(GLuint polygonShader, DrawInstruction *draw, float width, float height);
-void renderUI(GLuint textShader, Frame *frame, Camera *camera, float deltaTime, float width, float height);
+void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction);
+
+void renderUI(GLuint shaderProgram, Frame *frame, Camera *camera, float deltaTime, float width, float height);
 #endif //UNIVERSE_RENDER_H

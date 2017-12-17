@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <cstdio>
 #include <cmath>
 
 #include "input.hpp"
@@ -12,25 +11,19 @@
 #include "spdlog.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <sstream>
-#include <random>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include "render.hpp"
-
-Application A = {
-    .paused = false,
-};
 
 int main(int argc, char *argv[]) {
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
-    A.window = initialise_window();
-    if (A.window == nullptr) {
+    Application A = {
+        .camera = Camera_new(),
+        .paused = false,
+    };
+    if ((A.window = initialise_window()) == nullptr) {
         return -1;
     }
-    A.camera = Camera_new();
     glfwSetWindowUserPointer(A.window, &A);
     initialise_font();
 
@@ -81,10 +74,9 @@ int main(int argc, char *argv[]) {
                 glGetUniformLocation(polygonShader, "lightPosition"),
                 1, glm::value_ptr(lightPosition)
         );
-        auto drawInstruction = test();
-        Frame_add_draw_instruction(frame, drawInstruction);
 
-        render(polygonShader, drawInstruction, widthf, heightf);
+        auto drawInstruction = test();
+        Frame_draw(frame, polygonShader, drawInstruction);
         renderUI(textShader, frame, A.camera, A.deltaTime, widthf, heightf);
 
         // next!
