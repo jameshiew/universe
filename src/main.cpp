@@ -9,6 +9,7 @@
 #include "polygon.hpp"
 #include "window.hpp"
 #include "font.hpp"
+#include "spdlog.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -24,6 +25,7 @@ Application A = {
 };
 
 int main(int argc, char *argv[]) {
+    auto logger = spdlog::stdout_color_mt("console");
     A.window = initWindow();
     if (A.window == nullptr) {
         return -1;
