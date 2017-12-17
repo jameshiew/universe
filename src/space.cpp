@@ -3,6 +3,7 @@
 //
 
 #include "space.hpp"
+#include "polygon.hpp"
 
 glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 DOWN = -UP;
@@ -34,7 +35,9 @@ void World_free(World *world) {
     free(world);
 }
 
-void *World_get_draw_instructions(World *world) {
-    return nullptr;
+std::list<void *> World_get_draw_instructions(World *world) {
+    std::list<void *> drawInstructions;
+    drawInstructions.push_back((void *) test());
+    return drawInstructions;
 }
 

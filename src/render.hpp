@@ -10,15 +10,17 @@
 #include "camera.hpp"
 
 typedef struct DrawInstruction {
-    GLsizei vertexSize;
     GLenum mode;
-    GLsizei count;
-    glm::vec3 *offsets;
-    size_t numberOfOffsets;
+    glm::vec3 *positions;
+    size_t count;
 
     GLuint vao;
     GLuint vbo;
+    GLsizei vertexSize;
+    GLsizei vertexCount;
+    bool useIndices;
     GLuint ebo;
+    GLsizei indexCount;
 } DrawInstruction;
 
 // Represents debug information about a frame drawn

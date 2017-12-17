@@ -14,6 +14,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "space.hpp"
 
 int main(int argc, char *argv[]) {
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
 //    GLuint texture = load_texture("../../textures/container.jpg");
 
     float timeOfLastFrame = 0.0f;
+    auto world = World_new();
     while (!glfwWindowShouldClose(A.window)) {
         auto timeValue = (float) glfwGetTime();
         A.deltaTime = timeValue - timeOfLastFrame;
@@ -76,8 +78,10 @@ int main(int argc, char *argv[]) {
                 1, glm::value_ptr(lightPosition)
         );
 
-        auto drawInstruction = test();
-        Frame_draw(frame, polygonShaderProgram->id, drawInstruction);
+        auto drawInstructions = World_get_draw_instructions(world);
+        for (auto &drawInstruction: drawInstructions) {
+            Frame_draw(frame, polygonShaderProgram->id, (DrawInstruction *)drawInstruction);
+        }
         renderUI(textShaderProgram->id, frame, A.camera, A.deltaTime, widthf, heightf);
 
         // next!
