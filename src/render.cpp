@@ -53,25 +53,29 @@ void Frame_free(Frame *frame) {
 void Frame_draw(Frame *frame, GLuint shaderProgram, DrawInstruction *drawInstruction) {
     switch (drawInstruction->mode) {
         case GL_TRIANGLES:
-            frame->triangles += drawInstruction->numberOfOffsets * (drawInstruction->count / 3);
+            frame->triangles += drawInstruction->count * (drawInstruction->vertexCount / 3);
             break;
         case GL_TRIANGLE_STRIP:
-            frame->triangles += drawInstruction->numberOfOffsets * (drawInstruction->count - 2);
+            frame->triangles += drawInstruction->count * (drawInstruction->vertexCount - 2);
             break;
         default:
             break;
     }
-    frame->vertices += drawInstruction->numberOfOffsets * drawInstruction->count;
-    frame->draws += drawInstruction->numberOfOffsets;
+    frame->vertices += drawInstruction->count * drawInstruction->vertexCount;
+    frame->draws += drawInstruction->count;
 
     glUseProgram(shaderProgram);
     glBindVertexArray(drawInstruction->vao);
-    for (int i = 0; i < drawInstruction->numberOfOffsets; i++) {
-        auto model = glm::translate(glm::mat4(), drawInstruction->offsets[i]);
+    for (int i = 0; i < drawInstruction->count; i++) {
+        auto model = glm::translate(glm::mat4(), drawInstruction->positions[i]);
         glUniformMatrix4fv(
             glGetUniformLocation(shaderProgram, "model"),
             1, GL_FALSE, glm::value_ptr(model)
         );
-        glDrawArrays(drawInstruction->mode, 0, drawInstruction->count);
+//        if (drawInstruction->useIndices) {
+//            glDrawElements(drawInstruction->mode, )
+//        } else {
+            glDrawArrays(drawInstruction->mode, 0, drawInstruction->vertexCount);
+//        }
     }
 }

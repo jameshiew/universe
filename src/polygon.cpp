@@ -167,14 +167,14 @@ DrawInstruction *test() {
     glEnableVertexAttribArray(1);
 
     draw->mode = GL_TRIANGLES;
-    draw->count = 36;
-    draw->numberOfOffsets = 100;
-    draw->offsets = (glm::vec3 *)(malloc(sizeof(glm::vec3) * draw->numberOfOffsets));
+    draw->vertexCount = 36;
+    draw->count = 100;
+    draw->positions = (glm::vec3 *)(malloc(sizeof(glm::vec3) * draw->count));
 
     std::default_random_engine prng;
     std::uniform_real_distribution<float> distribution(-100.f,100.f);
-    for (int i = 0; i < draw->numberOfOffsets; i++) {
-        draw->offsets[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
+    for (int i = 0; i < draw->count; i++) {
+        draw->positions[i] = glm::vec3(distribution(prng), distribution(prng), distribution(prng));
     }
     return draw;
 }
