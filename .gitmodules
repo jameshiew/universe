@@ -1,9 +1,6 @@
 [submodule "vendor/stb"]
 	path = vendor/stb
 	url = https://github.com/nothings/stb.git
-[submodule "vendor/quadtree"]
-	path = vendor/quadtree
-	url = https://github.com/thejefflarson/quadtree.git
 [submodule "vendor/spdlog"]
 	path = vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
