@@ -23,9 +23,16 @@ extern const glm::vec3 SOUTH;
 
 extern const glm::mat4 IDENTITY;
 
+typedef struct Block {
+    char id;
+};
+
 typedef struct Chunk {
-    char blocks[32][32][32];
+    Block blocks[32][32][32];
 } Chunk;
+
+void Chunk_add(glm::ivec3 coords, Block block);
+void Chunk_remove(glm::ivec3 coords);
 
 typedef struct World {
     void generate(World*, glm::ivec3);

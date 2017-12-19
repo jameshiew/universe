@@ -21,11 +21,11 @@ void World::generate(World *world, glm::ivec3 coords) {
     if (coords.y == 0) {
         for (int _x = 0; _x < 32; _x++) {  // ground
             for (int _z = 0; _z < 32; _z++) {
-                chunk.blocks[_x][0][_z] = 'g';
+                chunk.blocks[_x][0][_z] = { .id = 'g' };
             }
         }
         for (int h = 1; h < 10; h++) {  // tree
-            chunk.blocks[16][h][16] = 'w';
+            chunk.blocks[16][h][16] = { .id = 'w' };
         }
     }
     world->chunks->operator[](coords) = chunk;
@@ -80,7 +80,7 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 for (int _x = 0; _x < 32; _x++) {
                     for (int _y = 0; _y < 32; _y++) {
                         for (int _z = 0; _z < 32; _z++) {
-                            switch (chunk.blocks[_x][_y][_z]) {
+                            switch (chunk.blocks[_x][_y][_z].id) {
                                 case 'g': {
                                     auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
                                     nposition += origin;
