@@ -119,20 +119,15 @@ const float CUBE_STRIP_VERTICES[] = {
         1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 };
 
-GLuint cubeTexture = 0;
-
 DrawInstruction *DrawInstruction_cube() {
     auto draw = (DrawInstruction *)malloc(sizeof(DrawInstruction));
     glGenVertexArrays(1, &(draw->vao));
     glBindVertexArray(draw->vao);
-    if (!cubeTexture) {
-        cubeTexture = load_texture("../../textures/container.jpg");
-    }
 
     draw->vertexSize = 8 * sizeof(float);
     draw->vertexCount = 24;
     draw->mode = GL_TRIANGLE_STRIP;
-    draw->texture = cubeTexture;
+    draw->positions = new std::list<glm::vec3>();
 
     glGenBuffers(1, &(draw->vbo));
     glBindBuffer(GL_ARRAY_BUFFER, draw->vbo);

@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
                 glGetUniformLocation(polygonShaderProgram->id, "lightPosition"),
                 1, glm::value_ptr(camera->position)
         );
-        auto drawInstructions = World_get_draw_instructions(world, camera->position, 3);
+        auto drawInstructions = World_get_draw_instructions(world, camera->position, 2);
         for (auto &drawInstruction: *drawInstructions) {
             Frame_draw(frame, polygonShaderProgram->id, (DrawInstruction *)drawInstruction);
         }

@@ -5,6 +5,7 @@
 #include <random>
 #include <spdlog.h>
 #include "space.hpp"
+#include "shaders.hpp"
 
 const glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
 const glm::vec3 DOWN = -UP;
@@ -17,11 +18,14 @@ const glm::mat4 IDENTITY = glm::mat4();
 
 void World::generate(World *world, glm::ivec3 coords) {
     auto chunk = world->chunks->operator[](coords);
-    if (coords.y == 0) {  // ground
-        for (int _x = 0; _x < 32; _x++) {
+    if (coords.y == 0) {
+        for (int _x = 0; _x < 32; _x++) {  // ground
             for (int _z = 0; _z < 32; _z++) {
-                chunk.blocks[_x][0][_z] = 'a';
+                chunk.blocks[_x][0][_z] = 'g';
             }
+        }
+        for (int h = 1; h < 10; h++) {  // tree
+            chunk.blocks[16][h][16] = 'w';
         }
     }
     world->chunks->operator[](coords) = chunk;
@@ -47,7 +51,14 @@ void World_free(World *world) {
     free(world);
 }
 
+GLuint grassTexture = 0, woodTexture = 0, leavesTexture = 0;
+
 std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec3 position, int range) {
+    if (grassTexture == 0) {
+        grassTexture = load_texture("../../textures/grass.png");
+        woodTexture = load_texture("../../textures/wood.png");
+        leavesTexture = load_texture("../../textures/leaves.png");
+    }
     auto drawInstructions = new std::list<DrawInstruction *>();
     int px = (int) round(position.x / 32.f);
     int py = (int) round(position.y / 32.f);
@@ -60,20 +71,44 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 };
                 auto chunk = world->chunks->operator[](glm::ivec3(x, y, z));
                 auto origin = glm::vec3(x * 32.f, y * 32.f, z * 32.f);
-                auto draw = DrawInstruction_cube();
-                draw->positions = new std::list<glm::vec3>();
+                auto grass = DrawInstruction_cube();
+                grass->texture = grassTexture;
+                auto wood = DrawInstruction_cube();
+                wood->texture = woodTexture;
+                auto leaves = DrawInstruction_cube();
+                leaves->texture = leavesTexture;
                 for (int _x = 0; _x < 32; _x++) {
                     for (int _y = 0; _y < 32; _y++) {
                         for (int _z = 0; _z < 32; _z++) {
-                            if (chunk.blocks[_x][_y][_z] == 'a') {
-                                auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
-                                nposition += origin;
-                                draw->positions->push_back(nposition);
+                            switch (chunk.blocks[_x][_y][_z]) {
+                                case 'g': {
+                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
+                                    nposition += origin;
+                                    grass->positions->push_back(nposition);
+                                    break;
+                                }
+                                case 'w': {
+                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
+                                    nposition += origin;
+                                    wood->positions->push_back(nposition);
+                                    break;
+                                }
+                                case 'l': {
+                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
+                                    nposition += origin;
+                                    leaves->positions->push_back(nposition);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-                drawInstructions->push_back(draw);
+                drawInstructions->push_back(grass);
+                drawInstructions->push_back(wood);
+                drawInstructions->push_back(leaves);
             }
         }
     }
