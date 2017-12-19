@@ -11,7 +11,7 @@ vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 out vec4 Color;
 
 void main(){
-    float ambientStrength = 0.7f;
+    float ambientStrength = 0.9f;
     vec3 ambientLight = ambientStrength * lightColor;
 
     vec3 diffuseLightDirection = normalize(lightPosition - WorldPosition);

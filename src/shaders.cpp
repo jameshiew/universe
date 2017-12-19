@@ -77,7 +77,8 @@ GLuint load_texture(const char *texturePath) {
     int width, height, nrChannels;
     unsigned char *data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
     if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        spdlog::get("glad")->debug("Texture loadedd: {}", texturePath);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
         spdlog::get("glad")->error("Failed to load texture from {}", texturePath);
