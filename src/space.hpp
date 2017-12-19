@@ -28,9 +28,11 @@ struct Block {
 };
 
 class Chunk {
-public:
+private:
     Block blocks[32][32][32];
+public:
     void add(glm::ivec3 coords, Block block);
+    Block *get(int x, int y, int z);
     void remove(glm::ivec3 coords);
 };
 
