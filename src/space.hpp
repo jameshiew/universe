@@ -27,9 +27,6 @@ typedef struct Chunk {
     char blocks[32][32][32];
 } Chunk;
 
-Chunk *Chunk_new();
-void Chunk_free(Chunk *chunk);
-
 typedef struct World {
     void generate(World*, glm::ivec3);
     std::unordered_map<glm::ivec3, Chunk> *chunks;
