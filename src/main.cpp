@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
         glUniformMatrix4fv(
                 glGetUniformLocation(polygonShaderProgram->id, "projection"),
                 1, GL_FALSE, glm::value_ptr(
-                        glm::perspective(70.0f, widthf / heightf, 0.1f, 1000.0f)
+                        glm::perspective(45.0f, widthf / heightf, 0.1f, 1000.0f)
                 )
         );
 
