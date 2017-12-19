@@ -15,15 +15,6 @@ const glm::vec3 SOUTH = -NORTH;
 
 const glm::mat4 IDENTITY = glm::mat4();
 
-Chunk *Chunk_new() {
-    return (Chunk *)calloc(1, sizeof(Chunk));
-}
-
-void Chunk_free(Chunk *chunk) {
-    free(chunk->blocks);
-    free(chunk);
-}
-
 void World::generate(World *world, glm::ivec3 coords) {
     auto chunk = world->chunks->operator[](coords);
     if (coords.y == 0) {  // ground
@@ -34,7 +25,7 @@ void World::generate(World *world, glm::ivec3 coords) {
         }
     }
     world->chunks->operator[](coords) = chunk;
-    spdlog::get("worldgen")->debug("Generated chunk: {:d}, {:d}, {:d}", coords.x, coords.y, coords.z);
+    spdlog::get("worldgen")->debug("Generated chunk: {}, {}, {}", coords.x, coords.y, coords.z);
 }
 
 World *World_new() {
@@ -52,6 +43,7 @@ World *World_new() {
 }
 
 void World_free(World *world) {
+    delete world->chunks;
     free(world);
 }
 

@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
     float deltaTime, timeOfLastFrame = 0.0f;
     auto world = World_new();
     auto frame = Frame_new();  // use same frame struct each render to save space
+
     while (!glfwWindowShouldClose(window)) {
         auto timeValue = (float) glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
@@ -55,22 +56,23 @@ int main(int argc, char *argv[]) {
         glfwGetFramebufferSize(window, &width, &height);
         auto widthf = (float) width, heightf = (float) height;
         glUseProgram(polygonShaderProgram->id);
-        auto projective = glm::perspective(70.0f, widthf / heightf, 0.1f, 1000.0f);
         glUniformMatrix4fv(
                 glGetUniformLocation(polygonShaderProgram->id, "projection"),
-                1, GL_FALSE, glm::value_ptr(projective)
+                1, GL_FALSE, glm::value_ptr(
+                        glm::perspective(70.0f, widthf / heightf, 0.1f, 1000.0f)
+                )
         );
 
-        auto view = glm::lookAt(camera->position, camera->position + camera->front, camera->up);
         glUniformMatrix4fv(
                 glGetUniformLocation(polygonShaderProgram->id, "view"),
-                1, GL_FALSE, glm::value_ptr(view)
+                1, GL_FALSE, glm::value_ptr(
+                        glm::lookAt(camera->position, camera->position + camera->front, camera->up)
+                )
         );
 
-        auto lightPosition = camera->position;
         glUniform3fv(
                 glGetUniformLocation(polygonShaderProgram->id, "lightPosition"),
-                1, glm::value_ptr(lightPosition)
+                1, glm::value_ptr(camera->position)
         );
         auto drawInstructions = World_get_draw_instructions(world, camera->position);
         for (auto &drawInstruction: *drawInstructions) {
@@ -81,11 +83,13 @@ int main(int argc, char *argv[]) {
         // next!
         glfwSwapBuffers(window);
         glfwPollEvents();
+        glFinish();
         Frame_clear(frame);
     }
     Frame_free(frame);
-    Camera_free(camera);
-//    World_free(world);
+    World_free(world);
     glfwTerminate();
+    Camera_free(camera);
+    spdlog::drop_all();
     return 0;
 }
