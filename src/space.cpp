@@ -114,3 +114,11 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
     }
     return drawInstructions;
 }
+
+void Chunk::add(glm::ivec3 coords, Block block) {
+    this->blocks[coords.x][coords.y][coords.z] = block;
+}
+
+void Chunk::remove(glm::ivec3 coords) {
+    this->blocks[coords.x][coords.y][coords.z] = { .id = 0 };
+}
