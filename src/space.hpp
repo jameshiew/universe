@@ -9,6 +9,10 @@
 #include <glm/detail/type_mat.hpp>
 #include "render.hpp"
 #include <map>
+#include <unordered_map>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
 
 extern const glm::vec3 UP;
 extern const glm::vec3 DOWN;
@@ -28,7 +32,7 @@ void Chunk_free(Chunk *chunk);
 
 typedef struct World {
     void generate(World*, glm::ivec3);
-    std::map<glm::ivec3, Chunk> *chunks;
+    std::unordered_map<glm::ivec3, Chunk> *chunks;
 } World;
 
 World *World_new();
