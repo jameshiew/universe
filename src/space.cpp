@@ -47,14 +47,16 @@ void World_free(World *world) {
     free(world);
 }
 
-std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec3 position) {
+std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec3 position, int range) {
     auto drawInstructions = new std::list<DrawInstruction *>();
-    for (int x = -1; x < 2; x++) {
-        for (int y = -1; y < 2; y++) {
-            for (int z = -1; z < 2; z++) {
+    int px = (int) round(position.x / 32.f);
+    int py = (int) round(position.y / 32.f);
+    int pz = (int) round(position.z / 32.f);
+    for (int x = px - range; x < px + range + 1; x++) {
+        for (int y = py - range; y < py + range + 1; y++) {
+            for (int z = pz - range; z < pz + range + 1; z++) {
                 if (world->chunks->find(glm::ivec3(x, y, z)) == world->chunks->end()) {
-                    spdlog::get("worldgen")->debug("No chunk at {:d}, {:d}, {:d}", x, y, z);
-                    continue;
+                    world->generate(world, glm::ivec3(x, y, z));
                 };
                 auto chunk = world->chunks->operator[](glm::ivec3(x, y, z));
                 auto origin = glm::vec3(x * 32.f, y * 32.f, z * 32.f);
