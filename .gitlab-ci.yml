@@ -4,7 +4,7 @@ image: registry.gitlab.com/jameshiew/universe/ci:latest
 before_script:
   - mkdir build/
   - cd build/
-  - conan install ..
+  - conan install --build missing ..
   - cmake ..
 
 build:

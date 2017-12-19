@@ -60,9 +60,9 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
         leavesTexture = load_texture("../../textures/leaves.png");
     }
     auto drawInstructions = new std::list<DrawInstruction *>();
-    int px = (int) round(position.x / 32.f);
-    int py = (int) round(position.y / 32.f);
-    int pz = (int) round(position.z / 32.f);
+    auto px = (int) round(position.x / 32.f);
+    auto py = (int) round(position.y / 32.f);
+    auto pz = (int) round(position.z / 32.f);
     for (int x = px - range; x < px + range + 1; x++) {
         for (int y = py - range; y < py + range + 1; y++) {
             for (int z = pz - range; z < pz + range + 1; z++) {
