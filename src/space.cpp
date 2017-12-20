@@ -8,11 +8,11 @@
 #include "shaders.hpp"
 
 const glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
-const glm::vec3 DOWN = -UP;
+const glm::vec3 DOWN = glm::vec3(0.0f, -1.0f, 0.0f);
 const glm::vec3 NORTH = glm::vec3(1.0f, 0.0f, 0.0f);
 const glm::vec3 WEST = glm::vec3(0.0f, 0.0f, 1.0f);
-const glm::vec3 EAST = -WEST;
-const glm::vec3 SOUTH = -NORTH;
+const glm::vec3 EAST = glm::vec3(0.0f, 0.0f, -1.0f);
+const glm::vec3 SOUTH = glm::vec3(-1.0f, 0.0f, 0.0f);
 
 const glm::mat4 IDENTITY = glm::mat4();
 
