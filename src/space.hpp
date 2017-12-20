@@ -23,6 +23,15 @@ extern const glm::vec3 SOUTH;
 
 extern const glm::mat4 IDENTITY;
 
+enum Mask {
+    MASK_UP = (1u << 1),
+    MASK_DOWN = (1u << 2),
+    MASK_NORTH = (1u << 3),
+    MASK_WEST = (1u << 4),
+    MASK_EAST = (1u << 5),
+    MASK_SOUTH = (1u << 6),
+};
+
 struct Block {
     char id;
 };
@@ -30,11 +39,18 @@ struct Block {
 class Chunk {
 private:
     Block blocks[32][32][32];
+    Mask masks[32][32][32];
 public:
-    void add(glm::ivec3 coords, Block block);
+    void add(int x, int y, int z, Block block);
     Block *get(int x, int y, int z);
-    void remove(glm::ivec3 coords);
+    std::list<std::pair<glm::ivec3, Block>> all();
+    void remove(int x, int y, int z);
 };
+
+//class ArrayChunk : public Chunk {
+//private:
+//    std::unordered_map<glm::ivec3, Block> *blocks;
+//};
 
 typedef struct World {
     void generate(World*, glm::ivec3);

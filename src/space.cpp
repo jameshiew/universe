@@ -21,11 +21,11 @@ void World::generate(World *world, glm::ivec3 coords) {
     if (coords.y == 0) {
         for (int _x = 0; _x < 32; _x++) {  // ground
             for (int _z = 0; _z < 32; _z++) {
-                chunk.add(glm::ivec3(_x, 0, _z), { .id = 'g' });
+                chunk.add(_x, 0, _z, { .id = 'g' });
             }
         }
         for (int h = 1; h < 10; h++) {  // tree
-            chunk.add(glm::ivec3(16, h, 16), { .id = 'w' });
+            chunk.add(16, h, 16, { .id = 'w' });
         }
     }
     world->chunks->operator[](coords) = chunk;
@@ -77,32 +77,25 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 wood->texture = woodTexture;
                 auto leaves = DrawInstruction_cube();
                 leaves->texture = leavesTexture;
-                for (int _x = 0; _x < 32; _x++) {
-                    for (int _y = 0; _y < 32; _y++) {
-                        for (int _z = 0; _z < 32; _z++) {
-                            switch (chunk.get(_x, _y, _z)->id) {
-                                case 'g': {
-                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
-                                    nposition += origin;
-                                    grass->positions->push_back(nposition);
-                                    break;
-                                }
-                                case 'w': {
-                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
-                                    nposition += origin;
-                                    wood->positions->push_back(nposition);
-                                    break;
-                                }
-                                case 'l': {
-                                    auto nposition = glm::vec3((float) _x, (float) _y, (float) _z);
-                                    nposition += origin;
-                                    leaves->positions->push_back(nposition);
-                                    break;
-                                }
-                                default: {
-                                    break;
-                                }
-                            }
+                for (auto &positionedBlock: chunk.all()) {
+                    switch (positionedBlock.second.id) {
+                        case 'g': {
+                            positionedBlock.first += origin;
+                            grass->positions->push_back(positionedBlock.first);
+                            break;
+                        }
+                        case 'w': {
+                            positionedBlock.first += origin;
+                            wood->positions->push_back(positionedBlock.first);
+                            break;
+                        }
+                        case 'l': {
+                            positionedBlock.first += origin;
+                            leaves->positions->push_back(positionedBlock.first);
+                            break;
+                        }
+                        default: {
+                            break;
                         }
                     }
                 }
@@ -115,14 +108,26 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
     return drawInstructions;
 }
 
-void Chunk::add(glm::ivec3 coords, Block block) {
-    this->blocks[coords.x][coords.y][coords.z] = block;
+void Chunk::add(int x, int y, int z, Block block) {
+    this->blocks[x][y][z] = block;
 }
 
-void Chunk::remove(glm::ivec3 coords) {
-    this->blocks[coords.x][coords.y][coords.z] = { .id = 0 };
+void Chunk::remove(int x, int y, int z) {
+    this->blocks[x][y][z] = { .id = 0 };
 }
 
 Block *Chunk::get(int x, int y, int z) {
     return &this->blocks[x][y][z];
+}
+
+std::list<std::pair<glm::ivec3, Block>> Chunk::all() {
+    auto all = std::list<std::pair<glm::ivec3, Block>>();
+    for (int x = 0; x < 32; x++) {
+        for (int y = 0; y < 32; y++) {
+            for (int z = 0; z < 32; z++) {
+                all.push_back(std::make_pair(glm::ivec3(x, y, z), this->blocks[x][y][z]));
+            }
+        }
+    }
+    return all;
 }
