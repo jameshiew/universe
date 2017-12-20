@@ -10,33 +10,27 @@
 
 #include "camera.hpp"
 #include "space.hpp"
-#include "window.hpp"
+#include "config.hpp"
 
-Camera *Camera_new() {
-    auto *camera = (Camera *) malloc(sizeof(Camera));
-    camera->position = glm::vec3(0.0f, 2.0f, 2.0f);
-    camera->behind = glm::normalize(camera->position);
-    camera->right = glm::normalize(glm::cross(UP, camera->behind));
-    camera->up = glm::cross(camera->behind, camera->right);
-    camera->front = -camera->position;
+Camera::Camera() {
+    position = glm::vec3(0.0f, 2.0f, 2.0f);
+    behind = glm::normalize(position);
+    right = glm::normalize(glm::cross(UP, behind));
+    up = glm::cross(behind, right);
+    front = -position;
 
-    camera->pitch = 0.0f;
-    camera->yaw = (float) -M_PI_2;
-    camera->roll = 0.0f;
+    pitch = 0.0f;
+    yaw = (float) -M_PI_2;
+    roll = 0.0f;
 
     // TODO: camera controller
-    camera->speed = 2.5f;
-    camera->sensitivity = 0.01f;
+    speed = 2.5f;
+    sensitivity = 0.01f;
 
-    camera->lastX = (float) DEFAULT_WINDOW_WIDTH / 2.f;
-    camera->lastY = (float) DEFAULT_WINDOW_HEIGHT / 2.f;
+    lastX = (float) DEFAULT_WINDOW_WIDTH / 2.f;
+    lastY = (float) DEFAULT_WINDOW_HEIGHT / 2.f;
 
-    camera->wireframe = false;
-    return camera;
-}
-
-void Camera_free(Camera* camera) {
-    free(camera);
+    wireframe = false;
 }
 
 void Camera_debug(Camera *camera) {
