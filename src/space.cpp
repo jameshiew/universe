@@ -109,11 +109,32 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
 }
 
 void Chunk::add(int x, int y, int z, Block block) {
+    this->filled.emplace(glm::ivec3(x, y, z));
     this->blocks[x][y][z] = block;
+    if (x < 31) {
+        this->masks[x+1][y][z] &= MASK_SOUTH;
+    }
+    if (0 < x) {
+        this->masks[x-1][y][z] &= MASK_NORTH;
+    }
+    if (y < 31) {
+        this->masks[x][y][z+1] &= MASK_EAST;
+    }
+    if (0 < y) {
+        this->masks[x][y][z-1] &= MASK_WEST;
+    }
+    if (z < 31) {
+        this->masks[x][y+1][z] &= MASK_DOWN;
+    }
+    if (0 < z) {
+        this->masks[x][y-1][z] &= MASK_UP;
+    }
 }
 
 void Chunk::remove(int x, int y, int z) {
+    this->filled.erase(glm::ivec3(x, y, z));
     this->blocks[x][y][z] = { .id = 0 };
+    // TODO: update mask
 }
 
 Block *Chunk::get(int x, int y, int z) {
@@ -122,12 +143,8 @@ Block *Chunk::get(int x, int y, int z) {
 
 std::list<std::pair<glm::ivec3, Block>> Chunk::all() {
     auto all = std::list<std::pair<glm::ivec3, Block>>();
-    for (int x = 0; x < 32; x++) {
-        for (int y = 0; y < 32; y++) {
-            for (int z = 0; z < 32; z++) {
-                all.push_back(std::make_pair(glm::ivec3(x, y, z), this->blocks[x][y][z]));
-            }
-        }
+    for (auto &coords : this->filled) {
+        all.emplace_back(std::make_pair(coords, this->blocks[coords.x][coords.y][coords.z]));
     }
     return all;
 }

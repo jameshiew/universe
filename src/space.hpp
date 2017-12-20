@@ -13,6 +13,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
+#include <unordered_set>
 
 extern const glm::vec3 UP;
 extern const glm::vec3 DOWN;
@@ -38,8 +39,9 @@ struct Block {
 
 class Chunk {
 private:
+    std::unordered_set<glm::ivec3> filled;
     Block blocks[32][32][32];
-    Mask masks[32][32][32];
+    unsigned int masks[32][32][32];
 public:
     void add(int x, int y, int z, Block block);
     Block *get(int x, int y, int z);
