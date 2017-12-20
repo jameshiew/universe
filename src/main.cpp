@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     initialise_font();
-    auto camera = Camera_new();
+    auto camera = new Camera();
     glfwSetWindowUserPointer(window, camera);
 
     auto polygonShaderProgram = ShaderProgram_load("../../shaders/polygon/textured_phong.vert",
@@ -89,7 +89,6 @@ int main(int argc, char *argv[]) {
     Frame_free(frame);
     World_free(world);
     glfwTerminate();
-    Camera_free(camera);
     spdlog::drop_all();
     return 0;
 }

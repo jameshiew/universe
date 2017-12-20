@@ -7,7 +7,10 @@
 
 #include <glm/glm.hpp>
 
-typedef struct Camera {
+class Camera {
+public:
+    Camera();
+
     glm::vec3 position;
     glm::vec3 behind;
     glm::vec3 right;
@@ -25,10 +28,8 @@ typedef struct Camera {
 
     // rendering options
     bool wireframe;
-} Camera;
+};
 
-Camera *Camera_new();
-void Camera_free(Camera *camera);
 void Camera_debug(Camera *camera);
 
 #endif //UNIVERSE_CAMERA_H
