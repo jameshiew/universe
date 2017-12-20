@@ -77,7 +77,7 @@ std::list<DrawInstruction *> *World_get_draw_instructions(World *world, glm::vec
                 wood->texture = woodTexture;
                 auto leaves = DrawInstruction_cube();
                 leaves->texture = leavesTexture;
-                for (auto &positionedBlock: chunk.all()) {
+                for (auto &positionedBlock: chunk.all_visible()) {
                     switch (positionedBlock.second.id) {
                         case 'g': {
                             positionedBlock.first += origin;
@@ -112,23 +112,24 @@ void Chunk::add(int x, int y, int z, Block block) {
     this->filled.emplace(glm::ivec3(x, y, z));
     this->blocks[x][y][z] = block;
     if (x < 31) {
-        this->masks[x+1][y][z] &= MASK_SOUTH;
+        this->masks[x+1][y][z] ^= MASK_SOUTH;
     }
     if (0 < x) {
-        this->masks[x-1][y][z] &= MASK_NORTH;
+        this->masks[x-1][y][z] ^= MASK_NORTH;
     }
     if (y < 31) {
-        this->masks[x][y][z+1] &= MASK_EAST;
+        this->masks[x][y][z+1] ^= MASK_EAST;
     }
     if (0 < y) {
-        this->masks[x][y][z-1] &= MASK_WEST;
+        this->masks[x][y][z-1] ^= MASK_WEST;
     }
     if (z < 31) {
-        this->masks[x][y+1][z] &= MASK_DOWN;
+        this->masks[x][y+1][z] ^= MASK_DOWN;
     }
     if (0 < z) {
-        this->masks[x][y-1][z] &= MASK_UP;
+        this->masks[x][y-1][z] ^= MASK_UP;
     }
+    spdlog::get("worldgen")->debug("Added block at {}, {}, {} - mask is {:b}", x, y, z, this->masks[x][y][z]);
 }
 
 void Chunk::remove(int x, int y, int z) {
@@ -145,6 +146,16 @@ std::list<std::pair<glm::ivec3, Block>> Chunk::all() {
     auto all = std::list<std::pair<glm::ivec3, Block>>();
     for (auto &coords : this->filled) {
         all.emplace_back(std::make_pair(coords, this->blocks[coords.x][coords.y][coords.z]));
+    }
+    return all;
+}
+
+std::list<std::pair<glm::ivec3, Block>> Chunk::all_visible() {
+    auto all = std::list<std::pair<glm::ivec3, Block>>();
+    for (auto &coords : this->filled) {
+        if (this->masks[coords.x][coords.y][coords.z] != MASK_ALL) {
+            all.emplace_back(std::make_pair(coords, this->blocks[coords.x][coords.y][coords.z]));
+        }
     }
     return all;
 }
