@@ -16,18 +16,36 @@ const glm::vec3 SOUTH = glm::vec3(-1.0f, 0.0f, 0.0f);
 
 const glm::mat4 IDENTITY = glm::mat4();
 
+void make_tree(Chunk &chunk, int x, int y, int z, int height = 10) {
+    for (int h = 1; h < height; h++) {  // tree
+        chunk.add(x, y + h, z, { .id = 'w' });
+    }
+    for (int dx = -1; dx < 3; dx++) {
+        for (int dy = -1; dy < 3; dy++) {
+            for (int dz = -1; dz < 3; dz++) {
+                chunk.add(x + dx, y + height + dz, z + dz, { .id = 'l' });
+            }
+        }
+    }
+}
+
 void World::generate(World *world, glm::ivec3 coords) {
     auto chunk = world->chunks->operator[](coords);
-    if (coords.y == 0) {
+    if (coords.y == 0) {  // flat world
         for (int _x = 0; _x < 32; _x++) {  // ground
             for (int _z = 0; _z < 32; _z++) {
                 chunk.add(_x, 0, _z, { .id = 'g' });
             }
         }
-        for (int h = 1; h < 10; h++) {  // tree
-            chunk.add(16, h, 16, { .id = 'w' });
-        }
+        make_tree(chunk, 16, 0, 16);
     }
+//    for (int _x = 0; _x < 32; _x++) {  // filled world
+//        for (int _y = 0; _y < 32; _y++) {
+//            for (int _z = 0; _z < 32; _z++) {
+//                chunk.add(_x, _y, _z, { .id = 'g' });
+//            }
+//        }
+//    }
     world->chunks->operator[](coords) = chunk;
     spdlog::get("worldgen")->debug("Generated chunk: {}, {}, {}", coords.x, coords.y, coords.z);
 }
