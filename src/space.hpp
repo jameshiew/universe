@@ -31,6 +31,7 @@ enum Mask {
     MASK_WEST = (1u << 4),
     MASK_EAST = (1u << 5),
     MASK_SOUTH = (1u << 6),
+    MASK_ALL = MASK_UP | MASK_DOWN | MASK_NORTH | MASK_WEST | MASK_EAST | MASK_SOUTH,
 };
 
 struct Block {
@@ -46,6 +47,7 @@ public:
     void add(int x, int y, int z, Block block);
     Block *get(int x, int y, int z);
     std::list<std::pair<glm::ivec3, Block>> all();
+    std::list<std::pair<glm::ivec3, Block>> all_visible();
     void remove(int x, int y, int z);
 };
 
