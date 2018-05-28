@@ -1,15 +1,16 @@
 # universe
 
 ## Getting Started
-`brew install glm`
 
-`git submodule init`
+* `brew install glm conan cmake`
 
-`git submodule update`
+* `git submodule init`
 
-`conan remote add https://api.bintray.com/conan/bincrafters/public-conan`
+* `git submodule update`
 
-`cd cmake-build-debug && conan install .. --build missing`
+* `conan remote add https://api.bintray.com/conan/bincrafters/public-conan`
+
+* `mkdir cmake-build-debug/ && cd cmake-build-debug && conan install .. --build missing`
 ``
 ## Controls
 
