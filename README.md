@@ -1,6 +1,10 @@
 # universe
 
-## Getting Started
+![Screenshot](screenshot.png "Screenshot")
+
+Learning C++ and OpenGL by experimenting with simple procedural generation.
+
+## Getting Started (on macOS)
 
 * `brew install glm conan cmake`
 
