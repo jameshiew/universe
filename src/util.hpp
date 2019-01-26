@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 12/12/2017.
-//
-
 #ifndef UNIVERSE_UTIL_H
 #define UNIVERSE_UTIL_H
 

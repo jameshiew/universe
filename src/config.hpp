@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 09/12/2017.
-//
-
 #ifndef UNIVERSE_CONFIG_H
 #define UNIVERSE_CONFIG_H
 

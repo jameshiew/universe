@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 09/12/2017.
-//
-
 #include <glad/glad.h>
 #include <cstdlib>
 #include <stb_image.h>
