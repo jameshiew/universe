@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 13/12/2017.
-//
-
 #include <glad/glad.h>
 #include <cstdio>
 #include "window.hpp"

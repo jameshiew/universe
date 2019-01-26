@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 13/12/2017.
-//
-
 #ifndef UNIVERSE_CAMERA_H
 #define UNIVERSE_CAMERA_H
 

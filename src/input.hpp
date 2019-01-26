@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 08/12/2017.
-//
-
 #ifndef UNIVERSE_INPUT_H
 #define UNIVERSE_INPUT_H
 

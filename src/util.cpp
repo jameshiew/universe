@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 12/12/2017.
-//
-
 #include <cstdio>
 #include <cstdlib>
 #include <cerrno>

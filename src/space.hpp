@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 15/12/2017.
-//
-
 #ifndef UNIVERSE_SPACE_HPP
 #define UNIVERSE_SPACE_HPP
 #include <glm/vec3.hpp>

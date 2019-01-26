@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 15/12/2017.
-//
-
 #include <map>
 #include <glad/glad.h>
 #include <string>

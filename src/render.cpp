@@ -1,7 +1,3 @@
-//
-// Created by James Hiew on 09/12/2017.
-//
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <string>
