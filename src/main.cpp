@@ -10,6 +10,7 @@
 #include "font.hpp"
 #include "space.hpp"
 #include "spdlog.h"
+#include "constants.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]) {
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     init_logging(FLAGS_debug);
 
-    spdlog::get("glfw")->info("Initializing GLFW version string=\"{}\"", glfwGetVersionString());
+    spdlog::get("glfw")->info("Initializing GLFW (version string=\"{}\")", glfwGetVersionString());
     GLFWwindow *window;
     if ((window = initialize_window()) == nullptr) {
         spdlog::get("glfw")->error("Failed to create GLFW window");

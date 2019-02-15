@@ -3,6 +3,7 @@
 #include "window.hpp"
 #include "input.hpp"
 #include "spdlog.h"
+#include "constants.hpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
