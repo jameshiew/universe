@@ -1,0 +1,6 @@
+#ifndef UNIVERSE_CONSTANTS_H
+#define UNIVERSE_CONSTANTS_H
+
+#define APPLICATION_NAME "Universe"
+
+#endif
