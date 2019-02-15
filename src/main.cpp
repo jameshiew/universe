@@ -18,18 +18,20 @@
 
 DEFINE_bool(debug, false, "whether to enable debug logging or not");
 
-int main(int argc, char *argv[]) {
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
-
+void init_logging(bool debug) {
+    spdlog::set_pattern("%H:%M:%S.%e %t %n %L: %v");
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
     auto glfwLogger = spdlog::stdout_color_mt("glfw");
     auto gladLogger = spdlog::stdout_color_mt("glad");
     auto worldgenLogger = spdlog::stdout_color_mt("worldgen");
-
-    spdlog::set_pattern("%H:%M:%S.%e %t %n %L: %v");
-    if (FLAGS_debug) {
+    if (debug) {
         spdlog::set_level(spdlog::level::debug);
     }
+}
+
+int main(int argc, char *argv[]) {
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    init_logging(FLAGS_debug);
 
     spdlog::get("glfw")->info("Initializing GLFW version string=\"{}\"", glfwGetVersionString());
     GLFWwindow *window;
