@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     auto world = World_new();
     auto frame = Frame_new();  // use same frame struct each render to save space
 
+    int width, height;
     while (!glfwWindowShouldClose(window)) {
         auto timeValue = (float) glfwGetTime();
         deltaTime = timeValue - timeOfLastFrame;
@@ -66,7 +67,6 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glPolygonMode(GL_FRONT_AND_BACK, camera->wireframe ? GL_LINE : GL_FILL);
 
-        int width, height;
         glfwGetFramebufferSize(window, &width, &height);
         auto widthf = (float) width, heightf = (float) height;
         glUseProgram(polygonShaderProgram->id);
@@ -104,5 +104,4 @@ int main(int argc, char *argv[]) {
     World_free(world);
     glfwTerminate();
     spdlog::drop_all();
-    return 0;
 }
