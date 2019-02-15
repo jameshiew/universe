@@ -17,7 +17,7 @@ typedef struct Character {
 
 std::map<GLchar, Character> Characters;
 
-void initialise_font() {
+void initialize_font() {
     if (FT_Init_FreeType(&library)) {
         fprintf(stderr, "Could not init freetype library\n");
     }

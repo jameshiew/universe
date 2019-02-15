@@ -5,7 +5,7 @@
 #include "config.hpp"
 #include "camera.hpp"
 
-GLFWwindow *initialise_window();
+GLFWwindow *initialize_window();
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 #endif //UNIVERSE_WINDOW_H
