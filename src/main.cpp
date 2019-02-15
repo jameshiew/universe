@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <gflags/gflags.h>
 
 #include <cmath>
 
@@ -15,12 +16,20 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+DEFINE_bool(debug, false, "whether to enable debug logging or not");
+
 int main(int argc, char *argv[]) {
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+
     auto logger = spdlog::stdout_color_mt(APPLICATION_NAME);
     auto glfwLogger = spdlog::stdout_color_mt("glfw");
     auto gladLogger = spdlog::stdout_color_mt("glad");
     auto worldgenLogger = spdlog::stdout_color_mt("worldgen");
-    spdlog::set_level(spdlog::level::debug);
+
+    spdlog::set_pattern("%H:%M:%S.%e %t %n %L: %v");
+    if (FLAGS_debug) {
+        spdlog::set_level(spdlog::level::debug);
+    }
 
     GLFWwindow *window;
     if ((window = initialise_window()) == nullptr) {
