@@ -31,11 +31,13 @@ int main(int argc, char *argv[]) {
         spdlog::set_level(spdlog::level::debug);
     }
 
+    spdlog::get("glfw")->info("Initializing GLFW version string=\"{}\"", glfwGetVersionString());
     GLFWwindow *window;
-    if ((window = initialise_window()) == nullptr) {
-        return -1;
+    if ((window = initialize_window()) == nullptr) {
+        spdlog::get("glfw")->error("Failed to create GLFW window");
+        return 1;
     }
-    initialise_font();
+    initialize_font();
     auto camera = new Camera();
     glfwSetWindowUserPointer(window, camera);
 

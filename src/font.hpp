@@ -10,7 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include FT_FREETYPE_H
 
-void initialise_font();
+void initialize_font();
 void render_text(GLuint shaderProgram, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 #endif //UNIVERSE_FONT_H

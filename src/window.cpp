@@ -12,18 +12,15 @@ void error_callback(int error, const char* description) {
     spdlog::get("glfw")->error("[Errno %d] %s", error, description);
 }
 
-GLFWwindow *initialise_window() {
-    spdlog::get("glfw")->info("Version: {0}", glfwGetVersionString());
-
+GLFWwindow *initialize_window() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "Universe", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, APPLICATION_NAME, NULL, NULL);
     if (window == nullptr) {
-        fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
         return nullptr;
     }
