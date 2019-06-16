@@ -1,15 +1,24 @@
 ---
-image: registry.gitlab.com/jameshiew/universe/ci:latest
-
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
-before_script:
-  - mkdir build/
-  - cd build/
-  - conan install .. --build missing
-  - cmake ..
+stages:
+  - build
 
 build:
+  image: ubuntu:18.04
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    CONAN_VERSION: 1.16.1
+  stage: build
   script:
-    - make -j 4
+    - apt update
+    - apt install -y gcc g++ make cmake python3-dev python3-pip
+    - apt install -y libglu1-mesa-dev xorg-dev # needed for glfw
+    - pip3 install conan==$CONAN_VERSION
+    - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
+    - mkdir build/
+    - cd build/
+    - conan install .. --build missing
+    - cmake ..
+    - make
+  artifacts:
+    paths:
+      - build/bin/universe

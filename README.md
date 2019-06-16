@@ -1,4 +1,4 @@
-# universe
+# universe [![pipeline status](https://gitlab.com/jameshiew/universe/badges/master/pipeline.svg)](https://gitlab.com/jameshiew/universe/commits/master)
 
 ![Screenshot](screenshot.png "Screenshot")
 
