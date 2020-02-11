@@ -1,18 +1,29 @@
 ---
 stages:
-  - build
+  - Build CI image
+  - Test and publish
+
+docker build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  stage: Build CI image
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest ci/
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  only:
+    changes:
+      - ci/Dockerfile
 
 build:
-  image: ubuntu:18.04
+  image: $CI_REGISTRY_IMAGE:latest
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-    CONAN_VERSION: 1.16.1
-  stage: build
+  stage: Test and publish
   script:
-    - apt update
-    - apt install -y gcc g++ make cmake python3-dev python3-pip
-    - apt install -y libglu1-mesa-dev xorg-dev # needed for glfw
-    - pip3 install conan==$CONAN_VERSION
     - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
     - mkdir build/
     - cd build/
