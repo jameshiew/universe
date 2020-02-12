@@ -16,23 +16,21 @@ Learning C++ and OpenGL by experimenting with simple procedural generation.
 ### Dependencies
 
 Some dependencies are vendored as Git submodules under `vendor/`, if you clone the repository recursively these will be cloned as well.
-```
+
+```shell script
 git clone --recursive https://github.com/jameshiew/universe.git
 ```
 
 Others are recorded in `conanfile.txt` and can be pulled in using Conan. The Bincrafters' public Conan repository needs to be added as a Conan remote.
-```
+
+```shell script
 conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
 ```
 
 ### Building and running
 
-```
-mkdir build/
-cd build/
-conan install .. --build missing
-cmake ..
-make
+```shell script
+./build.sh
 cd bin/
 ./universe
 ```

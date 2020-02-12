@@ -24,12 +24,7 @@ build:
     GIT_SUBMODULE_STRATEGY: recursive
   stage: Test and publish
   script:
-    - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
-    - mkdir build/
-    - cd build/
-    - conan install .. --build missing
-    - cmake ..
-    - make
+    - ./build.sh
   artifacts:
     paths:
       - build/bin/universe
