@@ -21,11 +21,7 @@ Some dependencies are vendored as Git submodules under `vendor/`, if you clone t
 git clone --recursive https://github.com/jameshiew/universe.git
 ```
 
-Others are recorded in `conanfile.txt` and can be pulled in using Conan. The Bincrafters' public Conan repository needs to be added as a Conan remote.
-
-```shell script
-conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
-```
+Others are recorded in `conanfile.txt` and can be pulled in using Conan.
 
 ### Building and running
 
