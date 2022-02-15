@@ -17,4 +17,4 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get install -y --no-install-recommends libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-render-util0-dev libxcb-util0-dev libxcb-xinerama0-dev libxcb-xkb-dev xkb-data && \
 	rm -rf /var/lib/apt/lists/*
-RUN pip3 install --no-cache-dir --verbose conan==1.41.0
+RUN pip3 install --no-cache-dir --verbose conan
